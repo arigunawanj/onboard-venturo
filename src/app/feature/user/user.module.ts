@@ -1,6 +1,6 @@
+import { DataTablesModule } from 'angular-datatables';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { UserRoutingModule } from './user-routing.module';
 import { FormsModule } from '@angular/forms';
 import { FormUserComponent } from './components/form-user/form-user.component';
@@ -16,7 +16,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     CommonModule,
     UserRoutingModule,
     FormsModule,
-    NgbModule
+    NgbModule,
+    DataTablesModule
   ]
 })
 export class UserModule { }

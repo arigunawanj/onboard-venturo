@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output, SimpleChange } from "@angular/core";
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  SimpleChange,
+} from "@angular/core";
 import { UserService } from "../../services/user.service";
 import { LandaService } from "src/app/core/services/landa.service";
 
@@ -8,7 +15,6 @@ import { LandaService } from "src/app/core/services/landa.service";
   styleUrls: ["./form-user.component.scss"],
 })
 export class FormUserComponent implements OnInit {
-  
   @Input() userId: number;
   @Output() afterSave = new EventEmitter<boolean>();
   cities = ["Malang", "Surabaya", "Mojokerto"];
@@ -31,7 +37,21 @@ export class FormUserComponent implements OnInit {
     name: string;
     email: string;
     password: string;
+    user_roles_id: string;
+    phone_number: string;
   };
+
+  roles: any;
+  getRoles() {
+    this.userService.getRoles().subscribe(
+      (res: any) => {
+        this.roles = res.data.list;
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
 
   getUser(userId) {
     this.userService.getUserById(userId).subscribe(
@@ -45,11 +65,14 @@ export class FormUserComponent implements OnInit {
   }
 
   resetForm() {
+    this.getRoles();
     this.formModel = {
       id: 0,
       name: "",
       email: "",
       password: "",
+      phone_number: '',
+      user_roles_id: '',
     };
 
     if (this.userId > 0) {

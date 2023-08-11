@@ -12,7 +12,7 @@ import { FormsModule } from '@angular/forms';
     CommonModule,
     FormsModule,
     ImageCropperModule,
-    Daterangepicker
+    // Daterangepicker
   ],
   exports: [
     PageTitleComponent,
