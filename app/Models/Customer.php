@@ -1,54 +1,26 @@
 <?php
+
 namespace App\Models;
 
-use App\Http\Traits\Uuid;
 use App\Repository\CrudInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
-class UserModel extends Model implements CrudInterface
+class Customer extends Model implements CrudInterface
 {
     use HasFactory;
-    use SoftDeletes; // Use SoftDeletes library
-    use Uuid;
 
-    /**
-     * Akan mengisi kolom "created_at" dan "updated_at" secara otomatis,
-     *
-     * @var bool
-     */
+    protected $table = 'm_customer';
+
+    protected $guarded = [];
+
     public $timestamps = true;
-    protected $attributes = [
-        'user_roles_id' => 1, // memberi nilai default = 1 pada kolom user_roles_id
-    ];
 
-    /**
-     * Menentukan kolom apa saja yang bisa dimanipulasi oleh UserModel
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'photo',
-        'user_roles_id',
-        'phone_number'
-    ];
+    public $incrementing = false;
 
     protected $casts = [
         'id' => 'string',
     ];
-
-    public $incrementing = false; // Bug ID
-
-    /**
-     * Menentukan nama tabel yang terhubung dengan Class ini
-     *
-     * @var string
-     */
-    protected $table = 'user_auth';
 
     public function drop(string $id)
     {
@@ -67,9 +39,8 @@ class UserModel extends Model implements CrudInterface
         if (!empty($filter['name'])) {
             $user->where('name', 'LIKE', '%' . $filter['name'] . '%');
         }
-
-        if (!empty($filter['email'])) {
-            $user->where('email', 'LIKE', '%' . $filter['email'] . '%');
+        if (!empty($filter['access'])) {
+            $user->where('access', 'LIKE', '%' . $filter['access'] . '%');
         }
 
         $sort = $sort ?: 'id DESC';

@@ -16,10 +16,11 @@ class UserSeeder extends Seeder
     public function run()
     {
         $user = UserModel::create([
-            'user_roles_id' => '',
-            'name' => 'Wahyu Agung',
-            'email' => 'agung@landa.co.id',
-            'password' => Hash::make('devGanteng'),
+            'user_roles_id' => 1,
+            'name' => 'Ari Gunawan Jatmiko',
+            'email' => 'arigunawanjatmiko@gmail.com',
+            'phone_number' => '085785196574',
+            'password' => Hash::make('12345678'),
             'updated_security' => date('Y-m-d H:i:s')
         ]);
     }

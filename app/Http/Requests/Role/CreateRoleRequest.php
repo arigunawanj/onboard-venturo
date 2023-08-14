@@ -12,7 +12,8 @@ class CreateRoleRequest extends FormRequest
     public function attributes()
     {
         return [
-            'name' => 'Nama Rolenya'
+            'name' => 'Role',
+            'access' => 'Akses'
         ];
     }
 

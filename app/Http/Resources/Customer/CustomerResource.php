@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Resources\User;
+namespace App\Http\Resources\Customer;
 
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserResource extends JsonResource
+class CustomerResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,11 +17,9 @@ class UserResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'password' => $this->password,
             'email' => $this->email,
-            'photo_url' => !empty($this->photo) ? Storage::disk('public')->url($this->photo) : Storage::disk('public')->url('../assets/img/no-image.png'),
-            'updated_security' => $this->updated_security,
             'phone_number' => $this->phone_number,
-            'user_roles_id' => (string) $this->user_roles_id,
         ];
     }
 }
