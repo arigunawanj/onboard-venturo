@@ -30,9 +30,9 @@ class CustomerController extends Controller
             'name' => $request->name ?? '',
             'email' => $request->email ?? '',
         ];
-        $users = $this->customer->getAll($filter, $request->per_page ?? 25, $request->sort ?? '');
+        $customers = $this->customer->getAll($filter, $request->per_page ?? 25, $request->sort ?? '');
 
-        return response()->success(new CustomerCollection($users['data']));
+        return response()->success(new CustomerCollection($customers['data']));
     }
 
     /**
@@ -52,13 +52,13 @@ class CustomerController extends Controller
         }
 
         $payload = $request->only(['name', 'phone_number', 'email']);
-        $user = $this->customer->create($payload);
+        $customer = $this->customer->create($payload);
 
-        if (!$user['status']) {
-            return response()->failed($user['error']);
+        if (!$customer['status']) {
+            return response()->failed($customer['error']);
         }
 
-        return response()->success(new CustomerResource($user['data']), "Customer berhasil ditambahkan");
+        return response()->success(new CustomerResource($customer['data']), "Customer berhasil ditambahkan");
     }
 
     /**
@@ -69,12 +69,12 @@ class CustomerController extends Controller
      */
     public function show($id)
     {
-        $user = $this->customer->getById($id);
+        $customer = $this->customer->getById($id);
 
-        if (!($user['status'])) {
+        if (!($customer['status'])) {
             return response()->failed(['Data customer tidak ditemukan'], 404);
         }
-        return response()->success(new CustomerResource($user['data']));
+        return response()->success(new CustomerResource($customer['data']));
     }
 
     /**
@@ -95,13 +95,13 @@ class CustomerController extends Controller
         }
 
         $payload = $request->only(['name', 'id', 'email']);
-        $user = $this->customer->update($payload, $payload['id'] ?? 0);
+        $customer = $this->customer->update($payload, $payload['id'] ?? 0);
 
-        if (!$user['status']) {
-            return response()->failed($user['error']);
+        if (!$customer['status']) {
+            return response()->failed($customer['error']);
         }
 
-        return response()->success(new CustomerResource($user['data']), "Customer berhasil diubah");
+        return response()->success(new CustomerResource($customer['data']), "Customer berhasil diubah");
     }
 
     /**
@@ -112,12 +112,12 @@ class CustomerController extends Controller
      */
     public function destroy($id)
     {
-        $user = $this->customer->delete($id);
+        $customer = $this->customer->delete($id);
 
-        if (!$user) {
+        if (!$customer) {
             return response()->failed(['Mohon maaf data customer tidak ditemukan']);
         }
 
-        return response()->success($user, "Customer berhasil dihapus");
+        return response()->success($customer, "Customer berhasil dihapus");
     }
 }

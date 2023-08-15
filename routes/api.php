@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\ProductCategoryController;
+use App\Http\Controllers\Api\PromoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,6 +49,12 @@ Route::prefix('v1')->group(function () {
     Route::post('/products', [ProductController::class, 'store']);
     Route::put('/products', [ProductController::class, 'update']);
     Route::delete('/products/{id}', [ProductController::class, 'destroy']);
+
+    Route::get('/promo', [PromoController::class, 'index']);
+    Route::get('/promo/{id}', [PromoController::class, 'show']);
+    Route::post('/promo', [PromoController::class, 'store']);
+    Route::put('/promo', [PromoController::class, 'update']);
+    Route::delete('/promo/{id}', [PromoController::class, 'destroy']);
 });
 
 Route::get('/', function () {
