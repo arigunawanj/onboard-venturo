@@ -10,14 +10,13 @@ class CreateCustomerRequest extends FormRequest
 {
 
     use ConvertsBase64ToFiles;
-    
+
     public $validator;
 
     public function attributes()
     {
         return [
             'name' => 'Nama Pengguna',
-            'password' => 'Password',
             'email' => 'Email',
             'phone_number' => 'Nomor Telepon',
         ];

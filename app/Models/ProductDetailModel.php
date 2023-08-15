@@ -2,29 +2,23 @@
 
 namespace App\Models;
 
-use App\Http\Traits\Uuid;
 use App\Repository\CrudInterface;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Customer extends Model implements CrudInterface
+class ProductDetailModel extends Model implements CrudInterface
 {
-    use HasFactory;
-    Use Uuid;
-    use SoftDeletes;
-
-    protected $table = 'm_customer';
-
-    protected $guarded = ['id'];
+    use HasFactory, SoftDeletes;
 
     public $timestamps = true;
-
-    public $incrementing = false;
-
-    protected $casts = [
-        'id' => 'string',
+    protected $fillable = [
+        'type',
+        'description',
+        'price',
+        'm_product_id'
     ];
+    protected $table = 'm_product_detail';
 
     public function drop(string $id)
     {
@@ -40,14 +34,15 @@ class Customer extends Model implements CrudInterface
     {
         $user = $this->query();
 
-        if (!empty($filter['name'])) {
-            $user->where('name', 'LIKE', '%' . $filter['name'] . '%');
-        }
-        if (!empty($filter['access'])) {
-            $user->where('access', 'LIKE', '%' . $filter['access'] . '%');
+        if (!empty($filter['type'])) {
+            $user->where('type', 'LIKE', '%' . $filter['type'] . '%');
         }
 
-        $sort = $sort ?: 'id DESC';
+        if (!empty($filter['m_product_id'])) {
+            $user->where('m_product_id', 'LIKE', '%' . $filter['m_product_id'] . '%');
+        }
+
+        $sort = $sort ?: 'm_product_category.index ASC';
         $user->orderByRaw($sort);
         $itemPerPage = ($itemPerPage > 0) ? $itemPerPage : false;
 

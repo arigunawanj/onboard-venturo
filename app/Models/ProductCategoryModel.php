@@ -2,29 +2,22 @@
 
 namespace App\Models;
 
-use App\Http\Traits\Uuid;
 use App\Repository\CrudInterface;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Customer extends Model implements CrudInterface
+class ProductCategoryModel extends Model implements CrudInterface
 {
     use HasFactory;
-    Use Uuid;
     use SoftDeletes;
 
-    protected $table = 'm_customer';
-
-    protected $guarded = ['id'];
-
     public $timestamps = true;
+    protected $fillable = [
+        'name', 'index'
 
-    public $incrementing = false;
-
-    protected $casts = [
-        'id' => 'string',
     ];
+    protected $table = 'm_product_category';
 
     public function drop(string $id)
     {
@@ -42,9 +35,6 @@ class Customer extends Model implements CrudInterface
 
         if (!empty($filter['name'])) {
             $user->where('name', 'LIKE', '%' . $filter['name'] . '%');
-        }
-        if (!empty($filter['access'])) {
-            $user->where('access', 'LIKE', '%' . $filter['access'] . '%');
         }
 
         $sort = $sort ?: 'id DESC';

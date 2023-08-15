@@ -51,14 +51,14 @@ class CustomerController extends Controller
             return response()->failed($request->validator->errors());
         }
 
-        $payload = $request->only(['email', 'name', 'password', 'photo', 'phone_number', 'user_roles_id']);
+        $payload = $request->only(['name', 'phone_number', 'email']);
         $user = $this->customer->create($payload);
 
         if (!$user['status']) {
             return response()->failed($user['error']);
         }
 
-        return response()->success(new CustomerResource($user['data']), "User berhasil ditambahkan");
+        return response()->success(new CustomerResource($user['data']), "Customer berhasil ditambahkan");
     }
 
     /**
@@ -72,7 +72,7 @@ class CustomerController extends Controller
         $user = $this->customer->getById($id);
 
         if (!($user['status'])) {
-            return response()->failed(['Data user tidak ditemukan'], 404);
+            return response()->failed(['Data customer tidak ditemukan'], 404);
         }
         return response()->success(new CustomerResource($user['data']));
     }
@@ -94,14 +94,14 @@ class CustomerController extends Controller
             return response()->failed($request->validator->errors());
         }
 
-        $payload = $request->only(['email', 'name', 'password', 'photo', 'phone_number', 'user_roles_id']);
+        $payload = $request->only(['name', 'id', 'email']);
         $user = $this->customer->update($payload, $payload['id'] ?? 0);
 
         if (!$user['status']) {
             return response()->failed($user['error']);
         }
 
-        return response()->success(new CustomerResource($user['data']), "User berhasil diubah");
+        return response()->success(new CustomerResource($user['data']), "Customer berhasil diubah");
     }
 
     /**
@@ -115,9 +115,9 @@ class CustomerController extends Controller
         $user = $this->customer->delete($id);
 
         if (!$user) {
-            return response()->failed(['Mohon maaf data pengguna tidak ditemukan']);
+            return response()->failed(['Mohon maaf data customer tidak ditemukan']);
         }
 
-        return response()->success($user, "User berhasil dihapus");
+        return response()->success($user, "Customer berhasil dihapus");
     }
 }

@@ -32,8 +32,6 @@ class CustomerHelper extends Venturo {
     public function create(array $payload): array
     {
         try {
-            $payload['password'] = Hash::make($payload['password']);
-
             $payload = $this->uploadGetPayload($payload);
             $user = $this->customerModel->store($payload);
 
@@ -130,14 +128,8 @@ class CustomerHelper extends Venturo {
     public function update(array $payload, string $id): array
     {
         try {
-            if (isset($payload['password']) && !empty($payload['password'])) {
-                $payload['password'] = Hash::make($payload['password']) ?: '';
-            } else {
-                unset($payload['password']);
-            }
 
-            $payload = $this->uploadGetPayload($payload);
-            $this->customerModel->edit($payload, '$id');
+            $this->customerModel->edit($payload, $id);
 
             $user = $this->getById($id);
 
