@@ -55,6 +55,12 @@ Route::prefix('v1')->group(function () {
     Route::post('/promo', [PromoController::class, 'store']);
     Route::put('/promo', [PromoController::class, 'update']);
     Route::delete('/promo/{id}', [PromoController::class, 'destroy']);
+
+    Route::get('/vouchers', [VoucherController::class, 'index']);
+    Route::get('/vouchers/{id}', [VoucherController::class, 'show']);
+    Route::post('/vouchers', [VoucherController::class, 'store']);
+    Route::put('/vouchers', [VoucherController::class, 'update']);
+    Route::delete('/vouchers/{id}', [VoucherController::class, 'destroy']);
 });
 
 Route::get('/', function () {
