@@ -1,13 +1,13 @@
 import {
   Component,
-  EventEmitter,
   Input,
   OnInit,
   Output,
+  EventEmitter,
   SimpleChange,
 } from "@angular/core";
-import { UserService } from "../../services/user.service";
 import { LandaService } from "src/app/core/services/landa.service";
+import { UserService } from "../../services/user.service";
 
 @Component({
   selector: "app-form-user",
@@ -15,10 +15,24 @@ import { LandaService } from "src/app/core/services/landa.service";
   styleUrls: ["./form-user.component.scss"],
 })
 export class FormUserComponent implements OnInit {
+  readonly MODE_CREATE = "add";
+  readonly MODE_UPDATE = "update";
+
   @Input() userId: number;
   @Output() afterSave = new EventEmitter<boolean>();
-  cities = ["Malang", "Surabaya", "Mojokerto"];
-  name: string;
+
+  activeMode: string;
+  roles: any;
+  formModel: {
+    id: number;
+    name: string;
+    email: string;
+    password: string;
+    phone_number: string;
+    user_roles_id: string;
+    photo: string;
+    photo_url: string;
+  };
 
   constructor(
     private userService: UserService,
@@ -27,41 +41,12 @@ export class FormUserComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  readonly MODE_CREATE = "add";
-  readonly MODE_UPDATE = "update";
-
-  activeMode: string;
-
-  formModel: {
-    id: number;
-    name: string;
-    email: string;
-    password: string;
-    user_roles_id: string;
-    phone_number: string;
-  };
-
-  roles: any;
-  getRoles() {
-    this.userService.getRoles().subscribe(
-      (res: any) => {
-        this.roles = res.data.list;
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
+  ngOnChanges(changes: SimpleChange) {
+    this.resetForm();
   }
 
-  getUser(userId) {
-    this.userService.getUserById(userId).subscribe(
-      (res: any) => {
-        this.formModel = res.data;
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
+  getCroppedImage($event) {
+    this.formModel.photo = $event;
   }
 
   resetForm() {
@@ -71,8 +56,10 @@ export class FormUserComponent implements OnInit {
       name: "",
       email: "",
       password: "",
-      phone_number: '',
-      user_roles_id: '',
+      phone_number: "",
+      user_roles_id: "",
+      photo: "",
+      photo_url: "",
     };
 
     if (this.userId > 0) {
@@ -83,6 +70,24 @@ export class FormUserComponent implements OnInit {
 
     this.activeMode = this.MODE_CREATE;
   }
+
+  getRoles() {
+    this.userService.getRoles().subscribe((res: any) => {
+      this.roles = res.data.list;
+    }, err => {
+      console.log(err);
+    });
+  }
+
+
+  getUser(userId) {
+    this.userService.getUserById(userId).subscribe((res: any) => {
+      this.formModel = res.data;
+    }, err => {
+      console.log(err);
+    });
+  }
+
 
   save() {
     switch (this.activeMode) {
@@ -95,31 +100,24 @@ export class FormUserComponent implements OnInit {
     }
   }
 
+
   insert() {
-    this.userService.createUser(this.formModel).subscribe(
-      (res: any) => {
-        this.landaService.alertSuccess("Berhasil", res.message);
-        this.afterSave.emit();
-      },
-      (err) => {
-        this.landaService.alertError("Mohon Maaf", err.error.errors);
-      }
-    );
+    this.userService.createUser(this.formModel).subscribe((res: any) => {
+      this.landaService.alertSuccess('Berhasil', res.message);
+      this.afterSave.emit();
+    }, err => {
+      this.landaService.alertError('Mohon Maaf', err.error.errors);
+    });
   }
+
 
   update() {
-    this.userService.updateUser(this.formModel).subscribe(
-      (res: any) => {
-        this.landaService.alertSuccess("Berhasil", res.message);
-        this.afterSave.emit();
-      },
-      (err) => {
-        this.landaService.alertError("Mohon Maaf", err.error.errors);
-      }
-    );
+    this.userService.updateUser(this.formModel).subscribe((res: any) => {
+      this.landaService.alertSuccess('Berhasil', res.message);
+      this.afterSave.emit();
+    }, err => {
+      this.landaService.alertError('Mohon Maaf', err.error.errors);
+    });
   }
 
-  ngOnChanges(changes: SimpleChange) {
-    this.resetForm();
-  }
 }

@@ -1,4 +1,17 @@
 <form>
+    <div class="form-group row mt-3">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+     <app-upload-image 
+     [defaultImage]="formModel.photo_url" 
+     [ratioHigh]="4" 
+     [ratioWidth]="3" 
+     (onSubmit)="getCroppedImage($event)">
+     </app-upload-image>
+        </div>
+        <div class="col-md-4"></div>
+     </div>
+     <hr>
   <div class="form-group row">
       <label class="col-md-4 required">Nama</label>
       <div class="col-md-8">
@@ -34,7 +47,7 @@
     <label class="col-md-4">Status</label>
     <div class="col-md-8">
         <div class="btn-group btn-group-toggle" ngbRadioGroup >
-            <label ngbButtonLabel class="btn-primary" *ngFor="let role of roles;">
+            <label ngbButtonLabel class="btn btn-primary" *ngFor="let role of roles;">
                 <input ngbButton type="radio" name="user_roles_id" [(ngModel)]="formModel.user_roles_id" value="{{role.id}}"> {{role.name}}
             </label>
         </div>

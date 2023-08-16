@@ -9,7 +9,7 @@ import { LayoutsModule } from './layouts/layouts.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthService } from './feature/auth/services/auth.service';
-import { NgbDateAdapter, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateAdapter, NgbDateParserFormatter, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CustomAdapter, CustomDateParserFormatter } from './core/adapter/datepicker-adapter';
 import { FormsModule } from '@angular/forms';
 
@@ -23,7 +23,8 @@ import { FormsModule } from '@angular/forms';
         LayoutsModule,
         AppRoutingModule,
         HttpClientModule,
-        FormsModule
+        FormsModule,
+        NgbModule
     ],
     providers: [
         AsyncPipe,
