@@ -23,6 +23,7 @@ export class FormUserComponent implements OnInit {
 
   activeMode: string;
   roles: any;
+  isDisabledForm: any;
   formModel: {
     id: number;
     name: string;
@@ -102,22 +103,44 @@ export class FormUserComponent implements OnInit {
 
 
   insert() {
-    this.userService.createUser(this.formModel).subscribe((res: any) => {
-      this.landaService.alertSuccess('Berhasil', res.message);
-      this.afterSave.emit();
-    }, err => {
-      this.landaService.alertError('Mohon Maaf', err.error.errors);
-    });
+    this.isDisabledForm = true;
+
+        this.userService.createUser(this.formModel).subscribe((res: any) => {
+
+          this.landaService.alertSuccess('Berhasil', res.message);
+
+          this.afterSave.emit();
+
+          this.isDisabledForm = false;
+
+        }, err => {
+
+          this.landaService.alertError('Mohon Maaf', err.error.errors);
+
+          this.isDisabledForm = false;
+
+        });
   }
 
 
   update() {
-    this.userService.updateUser(this.formModel).subscribe((res: any) => {
-      this.landaService.alertSuccess('Berhasil', res.message);
-      this.afterSave.emit();
-    }, err => {
-      this.landaService.alertError('Mohon Maaf', err.error.errors);
-    });
+    this.isDisabledForm = true;
+
+        this.userService.updateUser(this.formModel).subscribe((res: any) => {
+
+          this.landaService.alertSuccess('Berhasil', res.message);
+
+          this.afterSave.emit();
+
+          this.isDisabledForm = false;
+
+        }, err => {
+
+          this.landaService.alertError('Mohon Maaf', err.error.errors);
+
+          this.isDisabledForm = false;
+
+        });
   }
 
 }

@@ -22,14 +22,11 @@ export class FormCustomerComponent {
   @Output() afterSave = new EventEmitter<boolean>();
 
   activeMode: string;
-  roles: any;
   formModel: {
     id: number;
     name: string;
     email: string;
-    password: string;
     phone_number: string;
-    user_roles_id: string;
     photo: string;
     photo_url: string;
   };
@@ -54,23 +51,21 @@ export class FormCustomerComponent {
       id: 0,
       name: "",
       email: "",
-      password: "",
       phone_number: "",
-      user_roles_id: "",
       photo: "",
       photo_url: "",
     };
 
     if (this.customerId > 0) {
       this.activeMode = this.MODE_UPDATE;
-      this.getUser(this.customerId);
+      this.getCustomer(this.customerId);
       return true;
     }
 
     this.activeMode = this.MODE_CREATE;
   }
 
-  getUser(customerId) {
+  getCustomer(customerId) {
     this.customerService.getCustomerById(customerId).subscribe((res: any) => {
       this.formModel = res.data;
     }, err => {

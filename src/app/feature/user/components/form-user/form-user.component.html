@@ -16,7 +16,7 @@
       <label class="col-md-4 required">Nama</label>
       <div class="col-md-8">
           <input [(ngModel)]="formModel.name" type="text" name="name" class="form-control"
-              placeholder="Nama Pengguna">
+              placeholder="Nama Pengguna" [ngClass]="{ 'disabled' : isDisabledForm}">
       </div>
   </div>
   <div class="form-group row">
@@ -30,7 +30,7 @@
       <label class="col-md-4">Password</label>
       <div class="col-md-8">
           <input [(ngModel)]="formModel.password" type="password" name="password" class="form-control"
-              placeholder="Password">
+              placeholder="Password" [ngClass]="{ 'disabled' : isDisabledForm}">
           <small class="form-text text-muted" *ngIf="activeMode == MODE_UPDATE">Kosongi password jika tidak
               diubah
           </small>
@@ -56,7 +56,7 @@
   <div class="form-group row">
       <label class="col-md-4"></label>
       <div class="col-md-8">
-          <button type="submit" class="btn btn-primary" (click)="save()">Simpan</button>
+          <button type="submit" class="btn btn-primary" (click)="save()" [ngClass]="{ 'disabled' : isDisabledForm}">Simpan</button>
       </div>
   </div>
 </form>
