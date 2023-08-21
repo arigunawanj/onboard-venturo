@@ -8,6 +8,7 @@ use App\Helpers\Venturo;
 
 class PromoHelper extends Venturo {
     private $promo;
+    const PROMO_PHOTO_DIRECTORY = 'foto-promo';
 
     public function __construct()
     {
@@ -27,6 +28,7 @@ class PromoHelper extends Venturo {
     public function create(array $payload): array
     {
         try {
+            $payload = $this->uploadGetPayload($payload);
             $role = $this->promo->store($payload);
 
             return [
@@ -122,6 +124,7 @@ class PromoHelper extends Venturo {
     public function update(array $payload, string $id): array
     {
         try {
+            $payload = $this->uploadGetPayload($payload);
             $this->promo->edit($payload, $id);
 
             $role = $this->getById($id);
@@ -136,5 +139,21 @@ class PromoHelper extends Venturo {
                 'error' => $th->getMessage()
             ];
         }
+    }
+
+    private function uploadGetPayload(array $payload)
+    {
+        /**
+         * Jika dalam payload terdapat base64 foto, maka Upload foto ke folder public/uploads/foto-user
+         */
+        if (!empty($payload['photo'])) {
+            $fileName = $this->generateFileName($payload['photo'], 'USER_' . date('Ymdhis'));
+            $photo = $payload['photo']->storeAs(self::PROMO_PHOTO_DIRECTORY, $fileName, 'public');
+            $payload['photo'] = $photo;
+        } else {
+            unset($payload['photo']);
+        }
+
+        return $payload;
     }
 }
