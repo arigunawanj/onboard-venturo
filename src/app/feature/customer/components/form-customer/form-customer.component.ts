@@ -14,7 +14,7 @@ import { LandaService } from "src/app/core/services/landa.service";
   templateUrl: './form-customer.component.html',
   styleUrls: ['./form-customer.component.scss']
 })
-export class FormCustomerComponent {
+export class FormCustomerComponent implements OnInit{
   readonly MODE_CREATE = "add";
   readonly MODE_UPDATE = "update";
 
@@ -56,7 +56,7 @@ export class FormCustomerComponent {
       photo_url: "",
     };
 
-    if (this.customerId > 0) {
+    if (this.customerId != 0) {
       this.activeMode = this.MODE_UPDATE;
       this.getCustomer(this.customerId);
       return true;

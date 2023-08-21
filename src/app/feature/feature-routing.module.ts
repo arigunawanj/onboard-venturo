@@ -4,6 +4,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { TestDirectiveComponent } from './test/components/test-directive/test-directive.component';
 import { ListUserComponent } from './user/components/list-user/list-user.component';
 import { ListCustomerComponent } from './customer/components/list-customer/list-customer.component';
+import { ListCategoryComponent } from './product/category/components/list-category/list-category.component';
+import { ListProductComponent } from './product/product/components/list-product/list-product.component';
 
 const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -11,6 +13,9 @@ const routes: Routes = [
     { path: 'user', component: ListUserComponent },
     { path: 'test', component: TestDirectiveComponent },
     { path: 'customer', component: ListCustomerComponent },
+    { path: 'category', component: ListCategoryComponent },
+    { path: 'product', component: ListProductComponent },
+
 ];
 
 @NgModule({

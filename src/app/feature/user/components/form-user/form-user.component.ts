@@ -63,7 +63,7 @@ export class FormUserComponent implements OnInit {
       photo_url: "",
     };
 
-    if (this.userId > 0) {
+    if (this.userId != 0) {
       this.activeMode = this.MODE_UPDATE;
       this.getUser(this.userId);
       return true;
