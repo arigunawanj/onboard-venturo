@@ -51,7 +51,7 @@ class CustomerController extends Controller
             return response()->failed($request->validator->errors());
         }
 
-        $payload = $request->only(['name', 'phone_number', 'email']);
+        $payload = $request->only(['name', 'phone_number', 'email', 'photo']);
         $customer = $this->customer->create($payload);
 
         if (!$customer['status']) {
@@ -94,7 +94,7 @@ class CustomerController extends Controller
             return response()->failed($request->validator->errors());
         }
 
-        $payload = $request->only(['name', 'id', 'email']);
+        $payload = $request->only(['name', 'id', 'email', 'phone_number', 'photo']);
         $customer = $this->customer->update($payload, $payload['id'] ?? 0);
 
         if (!$customer['status']) {

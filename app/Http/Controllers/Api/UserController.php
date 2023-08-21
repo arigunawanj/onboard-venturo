@@ -47,7 +47,7 @@ class UserController extends Controller
             'email' => $request->email ?? '',
         ];
         $users = $this->user->getAll($filter, $request->per_page ?? 25, $request->sort ?? '');
-     
+
         return response()->success(new UserCollection($users['data']));
 
     }
@@ -104,6 +104,7 @@ class UserController extends Controller
          * Menampilkan pesan error ketika validasi gagal
          * pengaturan validasi bisa dilihat pada class app/Http/request/User/UpdateRequest
          */
+        
         if (isset($request->validator) && $request->validator->fails()) {
             return response()->failed($request->validator->errors());
         }

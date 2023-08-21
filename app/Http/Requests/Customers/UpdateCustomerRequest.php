@@ -43,7 +43,7 @@ class UpdateCustomerRequest extends FormRequest
     protected function base64FileKeys(): array
     {
         return [
-            'photo' => 'foto-user.jpg',
+            'photo' => 'foto-customer.jpg',
         ];
     }
 }
