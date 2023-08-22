@@ -32,13 +32,13 @@
             <div class="form-group row">
                 <label class="col-md-3 required">Status</label>
                 <div class="col-md-9">
-                    <div class="btn-group btn-group-toggle" ngbRadioGroup name="is_available"
+                    <div class="btn-group btn-group-toggle" ngbRadioGroup 
                         [(ngModel)]="formModel.is_available">
                         <label ngbButtonLabel class="btn-primary">
-                            <input ngbButton type="radio" value="1"> Ada
+                            <input ngbButton type="radio" value="1" name="is_available"> Ada
                         </label>
                         <label ngbButtonLabel class="btn-primary">
-                            <input ngbButton type="radio" value="0"> Habis
+                            <input ngbButton type="radio" value="0" name="is_available"> Habis
                         </label>
                     </div>
                 </div>

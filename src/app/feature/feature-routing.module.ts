@@ -6,6 +6,7 @@ import { ListUserComponent } from './user/components/list-user/list-user.compone
 import { ListCustomerComponent } from './customer/components/list-customer/list-customer.component';
 import { ListCategoryComponent } from './product/category/components/list-category/list-category.component';
 import { ListProductComponent } from './product/product/components/list-product/list-product.component';
+import { ListPromoComponent } from './promo/components/list-promo/list-promo.component';
 
 const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -15,6 +16,7 @@ const routes: Routes = [
     { path: 'customer', component: ListCustomerComponent },
     { path: 'category', component: ListCategoryComponent },
     { path: 'product', component: ListProductComponent },
+    { path: 'promo', component: ListPromoComponent },
 
 ];
 

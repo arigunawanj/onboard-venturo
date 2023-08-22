@@ -21,14 +21,12 @@ export class FormProductComponent {
   readonly MODE_CREATE = 'add';
   readonly MODE_UPDATE = 'update';
 
-
   @Input() productId: number;
   @Output() afterSave = new EventEmitter<boolean>();
 
-
   configEditor = ClassicEditor;
   activeMode: string;
-  categories: any;
+  categories: [];
   showLoading: boolean;
   formModel: {
     id: number,
@@ -43,32 +41,31 @@ export class FormProductComponent {
     details_deleted: any
   }
 
-
   constructor(
     private productService: ProductService,
     private categoriService: CategoryService,
     private landaService: LandaService,
   ) { }
 
-
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   ngOnChanges(changes: SimpleChange) {
     this.resetForm();
   }
 
-  getCroppedImage($event) {
-    this.formModel.photo = $event;
-  }
-
-  getProduct(productId) {
-    this.productService.getProductId(productId).subscribe((res: any) => {
-      this.formModel = res.data;
+  getCategories(name = '') {
+    this.showLoading = true;
+    this.categoriService.getCategories({ name: name }).subscribe((res: any) => {
+      this.categories = res.data.list;
+      this.showLoading = false;
     }, err => {
       console.log(err);
     });
   }
 
+  getCroppedImage($event) {
+    this.formModel.photo = $event;
+  }
 
   resetForm() {
     this.getCategories();
@@ -85,7 +82,6 @@ export class FormProductComponent {
       details_deleted: []
     }
 
-
     if (this.productId > 0) {
       this.activeMode = this.MODE_UPDATE;
       this.getProduct(this.productId);
@@ -93,19 +89,16 @@ export class FormProductComponent {
     }
 
     this.activeMode = this.MODE_CREATE;
-
   }
 
-  getCategories(name = '') {
-    this.showLoading = true;
-    this.categoriService.getCategories({ name: name }).subscribe((res: any) => {
-      this.categories = res.data.list;
-      this.showLoading = false;
+  getProduct(productId) {
+
+    this.productService.getProductId(productId).subscribe((res: any) => {
+      this.formModel = res.data;
     }, err => {
       console.log(err);
     });
   }
-
 
   save() {
     switch (this.activeMode) {
@@ -127,7 +120,6 @@ export class FormProductComponent {
     });
   }
 
-
   update() {
     this.productService.updateProduct(this.formModel).subscribe((res: any) => {
       this.landaService.alertSuccess('Berhasil', res.message);
@@ -137,14 +129,13 @@ export class FormProductComponent {
     });
   }
 
-
   addDetail() {
     let val = {
       is_added: true,
-      description: "",
+      description: '',
       type: this.DEFAULT_TYPE,
       price: 0,
-    };
+    }
     this.formModel.details.push(val);
   }
 
@@ -160,4 +151,5 @@ export class FormProductComponent {
       details.is_updated = true;
     }
   }
+
 }
