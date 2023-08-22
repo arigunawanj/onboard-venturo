@@ -46,17 +46,18 @@
   <div class="form-group row">
     <label class="col-md-4">Status</label>
     <div class="col-md-8">
-        <div class="btn-group btn-group-toggle" ngbRadioGroup >
-            <label ngbButtonLabel class="btn btn-primary" *ngFor="let role of roles;">
-                <input ngbButton type="radio" name="user_roles_id" [(ngModel)]="formModel.user_roles_id" value="{{role.id}}"> {{role.name}}
+        <div class="btn-group btn-group-toggle">
+            <label class="btn btn-primary" *ngFor="let role of roles;">
+                <input  type="radio" class="btn-check" name="user_roles_id" [(ngModel)]="formModel.user_roles_id" value="{{role.id}}"> {{role.name}}
             </label>
+          
         </div>
     </div>
  </div>
   <div class="form-group row">
       <label class="col-md-4"></label>
       <div class="col-md-8">
-          <button type="submit" class="btn btn-primary" (click)="save()" [ngClass]="{ 'disabled' : isDisabledForm}">Simpan</button>
+          <button type="button" class="btn btn-primary" (click)="save()" [ngClass]="{ 'disabled' : isDisabledForm}" ><em class="fa fa-save"></em> Simpan</button>
       </div>
   </div>
 </form>

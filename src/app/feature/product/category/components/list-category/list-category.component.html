@@ -17,7 +17,7 @@
                             <tr>
                                 <th class="text-center" style="width: 10px;">No</th>
                                 <th class="text-left">Nama</th>
-                                <th class="text-center"></th>
+                                <th class="text-center">Aksi</th>
                             </tr>
                         </thead>
                         <tbody dndDropzone dndEffectAllowed="move" (dndDrop)="onDrop($any($event), listCategory)">
@@ -30,16 +30,16 @@
                                 <td class="text-center">{{i+1}}</td>
                                 <td class="vertical-middle text-left">{{category.name}}</td>
                                 <td class="vertical-middle text-center">
-                                    <a href="javascript: void(0);" class="align-middle mr-2"
-                                        (click)="updateCategory(formCategory, category)" placement="left"
-                                        container="body" ngbTooltip="Ubah">
-                                        <em class="fa fa-edit font-size-14"></em>
-                                    </a>
-                                    <a href="javascript: void(0);" class="align-middle"
-                                        (click)="deleteCategory(category.id)" placement="left" container="body"
-                                        ngbTooltip="Hapus">
-                                        <em class="fa fa-trash font-size-14"></em>
-                                    </a>
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn btn-primary">
+                                            <em class="fa fa-edit font-size-14" (click)="updateCategory(formCategory, category)"
+                                                placement="left" container="body" ngbTooltip="Ubah"></em>
+                                        </button>
+                                        <button type="button" class="btn btn-danger" (click)="deleteCategory(category.id)"
+                                            placement="left" container="body" ngbTooltip="Hapus">
+                                            <em class="fa fa-trash font-size-14"></em>
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>

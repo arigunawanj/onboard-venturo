@@ -7,6 +7,7 @@ import { ListCustomerComponent } from './customer/components/list-customer/list-
 import { ListCategoryComponent } from './product/category/components/list-category/list-category.component';
 import { ListProductComponent } from './product/product/components/list-product/list-product.component';
 import { ListPromoComponent } from './promo/components/list-promo/list-promo.component';
+import { ListVoucherComponent } from './promo/voucher/components/list-voucher/list-voucher.component';
 
 const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -17,6 +18,7 @@ const routes: Routes = [
     { path: 'category', component: ListCategoryComponent },
     { path: 'product', component: ListProductComponent },
     { path: 'promo', component: ListPromoComponent },
+    { path: 'voucher', component: ListVoucherComponent },
 
 ];
 

@@ -12,9 +12,11 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { CustomerModule } from '../customer/customer.module';
 import { ListPromoComponent } from './components/list-promo/list-promo.component';
 import { FormPromoComponent } from './components/form-promo/form-promo.component';
+import { ListVoucherComponent } from './voucher/components/list-voucher/list-voucher.component';
+import { FormVoucherComponent } from './voucher/components/form-voucher/form-voucher.component';
 
 @NgModule({
-  declarations: [ListPromoComponent, FormPromoComponent],
+  declarations: [ListPromoComponent, FormPromoComponent, ListVoucherComponent, FormVoucherComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -24,7 +26,8 @@ import { FormPromoComponent } from './components/form-promo/form-promo.component
     SharedModule,
     CoreModule,
     CKEditorModule,
-    CustomerModule
+    CustomerModule,
+    
   ]
 })
 export class PromoModule {}

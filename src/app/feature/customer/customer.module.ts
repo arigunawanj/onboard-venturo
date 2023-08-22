@@ -22,6 +22,9 @@ import { SharedModule } from 'src/app/shared/shared.module';
     FormsModule,
     DataTablesModule,
     SharedModule
+  ],
+  exports: [
+    FormCustomerComponent
   ]
 })
 export class CustomerModule { }

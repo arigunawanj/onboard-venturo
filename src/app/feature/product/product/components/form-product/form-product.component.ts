@@ -7,7 +7,7 @@ import {
 } from "@angular/core";
 import { LandaService } from "src/app/core/services/landa.service";
 import { ProductService } from "../../services/product.service";
-import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic'
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { CategoryService } from "../../../category/services/category.service";
 
 @Component({
