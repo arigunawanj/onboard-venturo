@@ -46,18 +46,14 @@
                 <label class="col-md-3 required">Nominal</label>
                 <div class="col-md-9">
                     <div class="input-group mr-2" *ngIf="formModel.status == 'voucher'">
-                        <div class="input-group-append">
                             <span class="input-group-text"> Rp </span>
-                        </div>
                         <input [(ngModel)]="formModel.nominal_rupiah" type="text" name="nominal_rupiah"
                             class="form-control" placeholder="Ex. 10.000" />
                     </div>
                     <div class="input-group mr-2" *ngIf="formModel.status == 'diskon'">
                         <input [(ngModel)]="formModel.nominal_percentage" type="text" name="nominal_percentage"
                             class="form-control" placeholder="Ex. 10%" />
-                        <div class="input-group-append">
                             <span class="input-group-text"> % </span>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -75,7 +71,7 @@
     </div>
     <div class="row">
         <div class="col-md-12 text-right">
-            <button type="button" class="btn btn-light mr-2" (click)="afterSave.emit()"><em
+            <button type="button" class="btn btn-light me-2" (click)="afterSave.emit()"><em
                     class="fa fa-arrow-left"></em> Kembali</button>
             <button type="button" class="btn btn-primary" (click)="save()"><em class="fa fa-save"></em> Simpan</button>
         </div>

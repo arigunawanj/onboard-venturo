@@ -5,13 +5,9 @@
                 <div class="card-header  d-flex justify-content-between">
                     <h1>Daftar Voucher</h1>
                     <div class="d-flex justify-content-end">
-                        <form class="form-inline">
-                            <div class="form-group">
-                                <app-daterangepicker [startDate]="filter.start_time" [endDate]="filter.start_time" [showRanges]="true" (onChange)="filterByPeriode($event)">
-                                </app-daterangepicker>
-                            </div>
-                            <div class="form-group">
-                                <ng-select [items]="customers" (change)="filterByCustomer($event)" [multiple]="true"
+                        <form class="d-flex">
+                            <div class="p-2">
+                                <ng-select style="min-width: 300px;" [items]="customers" (change)="filterByCustomer($event)" [multiple]="true"
                                     id="filter-customer" class="mr-2" [placeholder]="filter.customer_id ? ' ' : 'pilih nama customer'" bindLabel="name"
                                     bindValue="id" [loading]="showLoading" [searchable]="false" name="customer_id">
                                     <ng-template ng-header-tmp>
@@ -20,10 +16,16 @@
                                     </ng-template>
                                 </ng-select>
                             </div>
+                            <div class="p-2">
+                                <app-daterangepicker [startDate]="filter.start_time" [endDate]="filter.start_time" [showRanges]="true" (onChange)="filterByPeriode($event)">
+                                </app-daterangepicker>
+                            </div>
                         </form>
-                        <button type="button" class="btn btn-sm btn-primary" (click)="formCreate()">
-                            <em class="fa fa-plus font-size-14 align-middle mr-1"></em> Tambah Voucher
-                        </button>
+                        <div class="p-2">
+                            <button type="button" class="btn btn-sm btn-primary" (click)="formCreate()">
+                                <em class="fa fa-plus font-size-14 align-middle mr-1"></em> Tambah Voucher
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="card-body">
