@@ -23,6 +23,7 @@ export class FormVoucherComponent implements OnInit {
   activeMode: string;
   customers: [];
   promo: [];
+  filterVoucher = [];
   showLoading: boolean;
   formModel: {
     id: number,
@@ -82,7 +83,7 @@ export class FormVoucherComponent implements OnInit {
       description: ''
     }
 
-    if (this.voucherId > 0) {
+    if (this.voucherId != 0) {
       this.activeMode = this.MODE_UPDATE;
       this.getVoucherById(this.voucherId);
       return true;

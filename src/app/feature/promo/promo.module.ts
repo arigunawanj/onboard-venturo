@@ -14,9 +14,11 @@ import { ListPromoComponent } from './components/list-promo/list-promo.component
 import { FormPromoComponent } from './components/form-promo/form-promo.component';
 import { ListVoucherComponent } from './voucher/components/list-voucher/list-voucher.component';
 import { FormVoucherComponent } from './voucher/components/form-voucher/form-voucher.component';
+import { FormDiskonComponent } from './diskon/components/form-diskon/form-diskon.component';
+import { ListDiskonComponent } from './diskon/components/list-diskon/list-diskon.component';
 
 @NgModule({
-  declarations: [ListPromoComponent, FormPromoComponent, ListVoucherComponent, FormVoucherComponent],
+  declarations: [ListPromoComponent, FormPromoComponent, ListVoucherComponent, FormVoucherComponent, FormDiskonComponent, ListDiskonComponent],
   imports: [
     CommonModule,
     FormsModule,

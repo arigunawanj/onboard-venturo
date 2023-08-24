@@ -1,0 +1,117 @@
+<div class="container-fluid">
+    <div class="col-md-12">
+      <div class="card card-transparent">
+        <div class="card-header d-flex justify-content-between">
+          <h1>Diskon</h1>
+          <div class="d-flex justify-content-end">
+            <form class="row">
+              <div class="form-group">
+                <div class="input-group mr-2">
+                  <ng-select
+                    style="min-width: 270px; max-width: 500px"
+                    [placeholder]="filter.name ? '' : 'Pilih Nama Customer'"
+                    [closeOnSelect]="false"
+                    [items]="customers"
+                    (change)="filterByCustomer($event)"
+                    [multiple]="true"
+                    id="filter-customer"
+                    bindLabel="name"
+                    bindValue="name"
+                    [loading]="showLoading"
+                    [searchable]="false"
+                    name="name"
+                  >
+                  </ng-select>
+                  <span
+                    class="input-group-text border-start-0 bg-white"
+                    (click)="reloadDataTable()"
+                  >
+                    <em class="fa fa-search"></em>
+                  </span>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="card-body">
+          <table class="table table-hover" datatable [dtOptions]="dtOptions">
+            <thead class="thead-light align-middle">
+              <tr>
+                <th class="col-1 text-center" style="width: 70px">No</th>
+                <th class="col-2">Nama</th>
+                <th class="col-1"></th>
+                <th class="col-auto"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let customer of listCustomers">
+                <td class="vertical-middle text-center col-1">
+                  {{ customer.no }}
+                </td>
+                <td class="vertical-middle col-2">{{ customer.name }}</td>
+                <td class="vertical-middle text-right col-1">
+                  <a
+                    href="javascript: void(0);"
+                    class="align-middle mr-2 btn btn-primary"
+                    (click)="formUpdate(customer, formCustomer)"
+                    placement="left"
+                    container="body"
+                    ngbTooltip="Ubah"
+                  >
+                    <em
+                      class="fa fa-edit font-size-14"
+                      style="color: #4f4f4f"
+                    ></em>
+                  </a>
+                </td>
+                <td class="col-auto"></td>
+                <ng-container *ngFor="let diskon of promo">
+                  <td class="vertical-middle text-center align-middle col-1">
+                    <span>
+                      <input
+                        class="form-check-input"
+                        [checked]="isPromoActive(customer.id, diskon.id)"
+                        (change)="
+                          onCheckboxChange($event, customer.id, diskon.id)
+                        "
+                        type="checkbox"
+                      />
+                    </span>
+                  </td>
+                </ng-container>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td class="col-1"></td>
+                <td class="col-2"></td>
+                <td class="col-1"></td>
+                <td class="col-auto vertical-middle text-center">Total</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <ng-template #formCustomer let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title mt-0">{{ titleModal }}</h5>
+      <button
+        type="button"
+        class="close"
+        (click)="modal.close()"
+        aria-label="Close"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <app-form-customer
+        [customerId]="customerId"
+        (afterSave)="modal.close(); reloadDataTable()"
+      ></app-form-customer>
+    </div>
+  </ng-template>
+  

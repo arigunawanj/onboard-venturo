@@ -1,0 +1,143 @@
+<form>
+    <div class="row">
+      <div class="col-md-2">
+        <div class="form-group row">
+          <div class="col-md-12">
+            <div class="upload-image-container">
+              <div class="image-picker">
+                <div class="no-image" *ngIf="!formModel.promo_id">
+                  <!-- <em class="fa fa-image"></em> -->
+                  <img
+                    style="width: 100%; height: 100%"
+                    src="https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg"
+                    alt=""
+                  />
+                </div>
+                <div class="image-ready" *ngIf="formModel.promo_id">
+                  <img
+                    style="width: 100%; height: 100%"
+                    src="{{ formModel.photo_url }}"
+                    alt=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-5">
+        <div class="form-group row">
+          <div class="input-group">
+            <label class="col-md-3 required">Customer</label>
+            <div class="col-md-8" style="max-height: 70px">
+              <ng-select
+                [items]="customers"
+                [placeholder]="!formModel.customer_id ? 'Pilih Customer' : ''"
+                bindLabel="name"
+                bindValue="id"
+                class="form-select form-select-sm"
+                [searchable]="false"
+                [(ngModel)]="formModel.customer_id"
+                name="customer_id"
+              >
+                <ng-template ng-header-tmp>
+                  <input
+                    class="form-control form-select-sm"
+                    type="text"
+                    debounceKeyUp
+                    (onEvent)="getCustomers($event.target.value)"
+                  />
+                </ng-template>
+              </ng-select>
+            </div>
+            <!-- <div class="input-group-prepend col-md-1" (click)="createCustomer(formCustomer)">
+                      <span class="input-group-text">
+                          <em class="fa fa-plus"></em>
+                      </span>
+                  </div> -->
+            <button
+              type="button"
+              class="btn btn-secondary col-md-1"
+              (click)="createCustomer(formCustomer)"
+            >
+              <em class="fa fa-plus"></em>
+            </button>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 required">Discount</label>
+          <div class="col-md-9">
+            <ng-select
+              [multiple]="true"
+              [items]="filterDiskon"
+              [placeholder]="!formModel.promo_id ? 'Pilih Diskon' : ''"
+              bindLabel="name"
+              bindValue="id"
+              class="form-select form-select-sm"
+              [searchable]="false"
+              [(ngModel)]="formModel.promo_id"
+              name="promo_id"
+              (change)="setSelectedPromo($event)"
+            >
+              <ng-template ng-header-tmp>
+                <input
+                  class="form-control form-select-sm"
+                  type="text"
+                  debounceKeyUp
+                  (onEvent)="getDiscountById($event.target.value)"
+                />
+              </ng-template>
+            </ng-select>
+          </div>
+  
+          <!-- <div class="input-group" *ngFor="let diskon of diskon">
+                      <label class="align-items-center col-md-3 required">{{diskon.name}}</label>
+                      <div class="col-md-9" [(ngModel)]="formModel.status">
+                          <div class="input-group">
+                              <input type="radio" class="btn-check" autocomplete="off" [name]="diskon.name" [id]="diskon.name+'0'" value="0">
+                              <label class="btn btn-primary" for="{{diskon.name+'0'}}">Off</label>
+                              <input type="radio" class="btn-check" autocomplete="off" [name]="diskon.name" [id]="diskon.name+'1'" value="1">
+                              <label class="btn btn-primary" for="{{diskon.name+'1'}}">On</label>
+                          </div>
+                      </div>
+                  </div>
+                   -->
+        </div>
+      </div>
+    </div>
+    <div class="row" style="float: right">
+      <div class="col-md-12 text-right">
+        <button
+          type="button"
+          class="btn btn-outline-primary mr-2"
+          (click)="afterSave.emit()"
+        >
+          <em class="fa fa-arrow-left"></em> Kembali
+        </button>
+        <button type="button" class="btn btn-primary" (click)="save()">
+          <em class="fa fa-save"></em> Simpan
+        </button>
+      </div>
+    </div>
+  </form>
+  
+  <ng-template #formCustomer let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title mt-0">Form Add Customer</h5>
+      <button
+        type="button"
+        class="close"
+        (click)="modal.close()"
+        aria-label="Close"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <app-form-customer
+        [customerId]="0"
+        (afterSave)="modal.close(); getCustomers()"
+      ></app-form-customer>
+    </div>
+  </ng-template>
+  

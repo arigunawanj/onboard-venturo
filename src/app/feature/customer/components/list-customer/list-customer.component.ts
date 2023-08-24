@@ -107,4 +107,5 @@ export class ListCustomerComponent implements OnInit {
       });
     });
   }
+  
 }
