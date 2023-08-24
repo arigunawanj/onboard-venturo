@@ -12,6 +12,8 @@ use Illuminate\Http\Request;
 
 class PromoController extends Controller
 {
+    const PROMO_DISKON = 'diskon';
+    const PROMO_VOUCHER = 'voucher';
     private $promo;
 
     public function __construct()
@@ -28,7 +30,6 @@ class PromoController extends Controller
     {
         $filter = [
             'name' => $request->name ?? '',
-            'access' => $request->access ?? '',
         ];
         $roles = $this->promo->getAll($filter, 5, $request->sort ?? '');
 
@@ -51,7 +52,8 @@ class PromoController extends Controller
             return response()->failed($request->validator->errors());
         }
 
-        $payload = $request->only(['name','nominal_percentage', 'nominal_rupiah', 'expired_in_day', 'term_conditions', 'photo']);
+        $payload = $request->only(['name','nominal_percentage','status', 'nominal_rupiah', 'expired_in_day', 'term_conditions', 'photo']);
+        $payload = $this->reformatPayload($payload);
         $promo = $this->promo->create($payload);
 
         if (!$promo['status']) {
@@ -90,7 +92,8 @@ class PromoController extends Controller
             return response()->failed($request->validator->errors());
         }
 
-        $payload = $request->only(['name', 'nominal_percentage', 'nominal_rupiah', 'expired_in_day', 'term_conditions', 'id', 'photo']);
+        $payload = $request->only(['name', 'nominal_percentage','status', 'nominal_rupiah', 'expired_in_day', 'term_conditions', 'id', 'photo']);
+        $payload = $this->reformatPayload($payload);
         $promo = $this->promo->update($payload, $payload['id'] ?? 0);
 
         if (!$promo['status']) {
@@ -98,6 +101,8 @@ class PromoController extends Controller
         }
 
         return response()->success(new PromoResource($promo['data']), "Promo berhasil diubah");
+
+
     }
 
     /**
@@ -116,4 +121,12 @@ class PromoController extends Controller
 
         return response()->success($promo, "Promo berhasil dihapus");
     }
+
+    private function reformatPayload($payloads)
+    {
+        $payloads['nominal_percentage'] = $payloads['status'] === self::PROMO_VOUCHER ? null : $payloads['nominal_percentage'];
+        $payloads['nominal_rupiah'] = $payloads['status'] === self::PROMO_DISKON ? null : $payloads['nominal_rupiah'];
+        return $payloads;
+    }
+
 }

@@ -21,6 +21,8 @@ class CreateMProductDetail extends Migration
                     ->comment('Fill with type of detail product');
             $table->string('description', 255)
                     ->comment('Fill with description of detail product, ex : Topping Telur');
+            $table->double('price')
+                    ->comment('Fill price of product');
             $table->timestamps();
             $table->softDeletes();
             $table->integer('created_by')->default(0);

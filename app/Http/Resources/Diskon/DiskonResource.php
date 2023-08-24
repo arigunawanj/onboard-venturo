@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Resources\Customer;
+namespace App\Http\Resources\Diskon;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CustomerResource extends JsonResource
+class DiskonResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,10 +16,11 @@ class CustomerResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'email' => $this->email,
-            'phone_number' => $this->phone_number,
-            'is_verified' => $this->is_verified,
+            'customer_id' => $this->customer->id ?? null,
+            'customer_name' => $this->customer->name ?? null,
+            'promo_id' => $this->promo->id ?? null,
+            'promo_name' => $this->promo->name ?? null,
+            'is_status' => $this->is_status,
         ];
     }
 }

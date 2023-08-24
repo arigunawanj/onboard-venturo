@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Promo;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
 class PromoResource extends JsonResource
 {
@@ -22,7 +23,8 @@ class PromoResource extends JsonResource
             'nominal_percentage' => $this->nominal_percentage,
             'nominal_rupiah' => $this->nominal_rupiah,
             'term_conditions' => $this->term_conditions,
-            'photo' => $this->photo,
+            // 'photo' => $this->photo,
+            'photo_url' => !empty($this->photo) ? Storage::disk('public')->url($this->photo) : Storage::disk('public')->url('foto-promo/no-photo-available.png'),
         ];
     }
 }

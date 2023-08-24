@@ -38,8 +38,8 @@ class UpdatePromoRequest extends FormRequest
             'id' => 'required',
             'name' => 'required',
             'expired_in_day' => 'nullable',
-            'nominal_percentage' => 'required|numeric',
-            'nominal_rupiah' => 'required|numeric',
+            'nominal_percentage' => 'numeric|required_if:status,diskon|nullable',
+            'nominal_rupiah' => 'numeric|required_if:status,voucher|nullable',
             'term_conditions' => 'required',
             'photo' => 'nullable',
         ];

@@ -1,27 +1,27 @@
 <?php
-namespace App\Helpers\Promo;
 
-use App\Helpers\Venturo;
-use App\Models\VoucherModel;
+namespace App\Helpers\Diskon;
+
 use Throwable;
+use App\Helpers\Venturo;
+use App\Models\DiskonModel;
 
-class VoucherHelper extends Venturo
-{
-  private $voucher;
+class DiskonHelper extends Venturo {
+    private $diskon;
 
   public function __construct()
   {
-      $this->voucher = new VoucherModel();
+      $this->diskon = new DiskonModel();
   }
 
   public function create(array $payload): array
   {
       try {
-          $voucher = $this->voucher->store($payload);
+          $diskon = $this->diskon->store($payload);
 
           return [
               'status' => true,
-              'data' => $voucher
+              'data' => $diskon
           ];
       } catch (Throwable $th) {
           return [
@@ -34,7 +34,7 @@ class VoucherHelper extends Venturo
   public function delete(string $id): bool
   {
       try {
-          $this->voucher->drop($id);
+          $this->diskon->drop($id);
 
           return true;
       } catch (Throwable $th) {
@@ -44,7 +44,7 @@ class VoucherHelper extends Venturo
 
   public function getAll(array $filter, int $itemPerPage = 0, string $sort = '')
   {
-      $categories = $this->voucher->getAll($filter, $itemPerPage, $sort);
+      $categories = $this->diskon->getAll($filter, $itemPerPage, $sort);
 
       return [
           'status' => true,
@@ -54,8 +54,8 @@ class VoucherHelper extends Venturo
 
   public function getById(string $id): array
   {
-      $voucher = $this->voucher->getById($id);
-      if (empty($voucher)) {
+      $diskon = $this->diskon->getById($id);
+      if (empty($diskon)) {
           return [
               'status' => false,
               'data' => null
@@ -64,20 +64,20 @@ class VoucherHelper extends Venturo
 
       return [
           'status' => true,
-          'data' => $voucher
+          'data' => $diskon
       ];
   }
 
   public function update(array $payload, string $id): array
   {
       try {
-          $this->voucher->edit($payload, $id);
+          $this->diskon->edit($payload, $id);
 
-          $voucher = $this->getById($id);
+          $diskon = $this->getById($id);
 
           return [
               'status' => true,
-              'data' => $voucher['data']
+              'data' => $diskon['data']
           ];
       } catch (Throwable $th) {
           return [

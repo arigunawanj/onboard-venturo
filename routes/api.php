@@ -3,10 +3,12 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\UserController;
-use App\Http\Controllers\Api\ProductController;
-use App\Http\Controllers\Api\CustomerController;
-use App\Http\Controllers\Api\ProductCategoryController;
 use App\Http\Controllers\Api\PromoController;
+use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\VoucherController;
+use App\Http\Controllers\Api\CustomerController;
+use App\Http\Controllers\Api\DiskonController;
+use App\Http\Controllers\Api\ProductCategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,6 +63,10 @@ Route::prefix('v1')->group(function () {
     Route::post('/vouchers', [VoucherController::class, 'store']);
     Route::put('/vouchers', [VoucherController::class, 'update']);
     Route::delete('/vouchers/{id}', [VoucherController::class, 'destroy']);
+
+    Route::get('/diskon', [DiskonController::class, 'index']);
+    Route::post('/diskon', [DiskonController::class, 'store']);
+    Route::put('/diskon', [DiskonController::class, 'update']);
 });
 
 Route::get('/', function () {

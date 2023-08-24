@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
 use App\Helpers\Promo\VoucherHelper;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Promo\VoucherRequest;
 use App\Http\Resources\Promo\VoucherResource;
 use App\Http\Resources\Promo\VoucherCollection;
+use Illuminate\Http\Request;
 
 class VoucherController extends Controller
 {
     private $voucher;
+    
     public function __construct()
     {
         $this->voucher = new VoucherHelper();
@@ -28,35 +30,6 @@ class VoucherController extends Controller
         return response()->success(new VoucherCollection($categories['data']));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        if (isset($request->validator) && $request->validator->fails()) {
-            return response()->failed($request->validator->errors());
-        }
-
-        $payload = $request->only(['customer_id', 'promo_id', 'start_time', 'end_time', 'total_voucher', 'nominal_rupiah', 'photo', 'description']);
-        $payload = $this->renamePayload($payload);
-        $voucher = $this->voucher->create($payload);
-
-        if (!$voucher['status']) {
-            return response()->failed($voucher['error']);
-        }
-
-        return response()->success(new VoucherResource($voucher['data']), 'voucher berhasil ditambahkan');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         $voucher = $this->voucher->getById($id);
@@ -68,14 +41,7 @@ class VoucherController extends Controller
         return response()->success(new VoucherResource($voucher['data']));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function update(VoucherRequest $request)
     {
         if (isset($request->validator) && $request->validator->fails()) {
             return response()->failed($request->validator->errors());
@@ -91,13 +57,23 @@ class VoucherController extends Controller
 
         return response()->success(new VoucherResource($voucher['data']), 'voucher berhasil diubah');
     }
+    
+    public function store(VoucherRequest $request)
+    {
+        if (isset($request->validator) && $request->validator->fails()) {
+            return response()->failed($request->validator->errors());
+        }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+        $payload = $request->only(['customer_id', 'promo_id', 'start_time', 'end_time', 'total_voucher', 'nominal_rupiah', 'photo', 'description']);
+        $payload = $this->renamePayload($payload);
+        $voucher = $this->voucher->create($payload);
+
+        if (!$voucher['status']) {
+            return response()->failed($voucher['error']);
+        }
+
+        return response()->success(new VoucherResource($voucher['data']), 'voucher berhasil ditambahkan');
+    }
     public function destroy($id)
     {
         $voucher = $this->voucher->delete($id);
@@ -109,9 +85,7 @@ class VoucherController extends Controller
         return response()->success($voucher, 'voucher berhasil dihapus');
     }
 
-
-    public function renamePayload($payload)
-    {
+    public function renamePayload($payload) {
         $payload['m_customer_id'] = $payload['customer_id'] ?? null;
         $payload['m_promo_id'] = $payload['promo_id'] ?? null;
         unset($payload['customer_id']);

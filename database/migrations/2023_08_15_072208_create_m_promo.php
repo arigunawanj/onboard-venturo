@@ -14,7 +14,7 @@ class CreateMPromo extends Migration
     public function up()
     {
         Schema::create('m_promo', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('name', 150)
                 ->comment('Fill with name of promo');
 
@@ -35,12 +35,12 @@ class CreateMPromo extends Migration
             $table->text('term_conditions')
                 ->comment('Fill with term and condition to get this promo');
 
-            $table->string('photo', 100);
+            $table->string('photo', 100)->nullable();
 
             $table->timestamps();
 
             $table->softDeletes();
-            
+
             $table->integer('created_by')->default(0);
             $table->integer('updated_by')->default(0);
             $table->integer('deleted_by')->default(0);

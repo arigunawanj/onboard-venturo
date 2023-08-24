@@ -1,17 +1,12 @@
 <?php
 
-namespace App\Http\Requests\Promo;
+namespace App\Http\Requests\Diskon;
 
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
 
-class VoucherRequest extends FormRequest
+class DiskonRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
 
     public $validator;
 
@@ -39,10 +34,7 @@ class VoucherRequest extends FormRequest
         return [
             'customer_id' => 'required',
             'promo_id' => 'required',
-            'start_time' => 'required',
-            'end_time' => 'required',
-            'total_voucher' => 'required|numeric',
-            'nominal_rupiah' => 'required|numeric',
+            'is_status' => 'required',
         ];
     }
 
@@ -52,10 +44,7 @@ class VoucherRequest extends FormRequest
             'id' => 'required',
             'customer_id' => 'required',
             'promo_id' => 'required',
-            'start_time' => 'required',
-            'end_time' => 'required',
-            'total_voucher' => 'required|numeric',
-            'nominal_rupiah' => 'required|numeric',
+            'is_status' => 'required',
         ];
     }
 
@@ -64,7 +53,7 @@ class VoucherRequest extends FormRequest
         return [
             'customer_id' => 'Customer',
             'promo_id' => 'Voucher',
-            'nominal_rupiah' => 'Nominal',
+            'status' => 'Status'
         ];
     }
 }

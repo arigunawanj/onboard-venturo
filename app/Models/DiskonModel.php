@@ -2,24 +2,38 @@
 
 namespace App\Models;
 
+use App\Models\Promo;
+use App\Models\Customer;
 use App\Http\Traits\Uuid;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Repository\CrudInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Promo extends Model
+class DiskonModel extends Model implements CrudInterface
 {
     use HasFactory, SoftDeletes, Uuid;
 
-    protected $table = 'm_promo';
-    protected $guarded = [];
+    protected $table = 'm_discount';
 
+    protected $guarded = ['id'];
     public $timestamps = true;
+
     public $incrementing = false;
 
     protected $casts = [
         'id' => 'string',
     ];
+
+    public function customer()
+    {
+        return $this->hasOne(Customer::class, 'id', 'm_customer_id');
+    }
+
+    public function promo()
+    {
+        return $this->hasOne(Promo::class, 'id', 'm_promo_id');
+    }
 
     public function drop(string $id)
     {
@@ -35,9 +49,10 @@ class Promo extends Model
     {
         $user = $this->query();
 
-        if (!empty($filter['name'])) {
-            $user->where('name', 'LIKE', '%' . $filter['name'] . '%');
+        if (!empty($filter['m_customer_id']) && is_array($filter['m_customer_id'])) {
+            $user->whereIn('m_customer_id', $filter['m_customer_id']);
         }
+    
 
         $sort = $sort ?: 'id DESC';
         $user->orderByRaw($sort);
@@ -55,4 +70,5 @@ class Promo extends Model
     {
         return $this->create($payload);
     }
+
 }

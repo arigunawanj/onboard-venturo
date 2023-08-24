@@ -35,10 +35,10 @@ class CreatePromoRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
+            'name' => 'required|max:150',
             'expired_in_day' => 'required',
-            'nominal_percentage' => 'required|numeric',
-            'nominal_rupiah' => 'required|numeric',
+            'nominal_percentage' => 'numeric|required_if:status,diskon|nullable',
+            'nominal_rupiah' => 'numeric|required_if:status,voucher|nullable',
             'term_conditions' => 'required',
             'photo' => 'nullable',
         ];

@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Promo;
+use App\Models\Customer;
+use App\Http\Traits\Uuid;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,6 +13,8 @@ class VoucherModel extends Model
 {
     use HasFactory;
     use SoftDeletes; // Use SoftDeletes library
+    use Uuid;
+
     public $timestamps = true;
     protected $fillable = [
         'name',
@@ -24,6 +29,10 @@ class VoucherModel extends Model
     ];
     protected $table = 'm_voucher';
 
+    protected $casts = [
+        'id' => 'string',
+    ];
+
     public function customer()
     {
         return $this->hasOne(Customer::class, 'id', 'm_customer_id');
@@ -34,12 +43,12 @@ class VoucherModel extends Model
         return $this->hasOne(Promo::class, 'id', 'm_promo_id');
     }
 
-    public function drop(int $id)
+    public function drop(string $id)
     {
         return $this->find($id)->delete();
     }
 
-    public function edit(array $payload, int $id)
+    public function edit(array $payload, string $id)
     {
         return $this->find($id)->update($payload);
     }
@@ -65,19 +74,19 @@ class VoucherModel extends Model
 
 
             $user->whereRaw('
-          (' . $dateVoucherBetweenParam . ') or
-          (' . $dateParamBetweenVoucher . ')
-      ');
+                (' . $dateVoucherBetweenParam . ') or
+                (' . $dateParamBetweenVoucher . ')
+            ');
         }
 
-        $sort = $sort ?: 'id DESC';
-        $user->orderByRaw($sort);
-        $itemPerPage = ($itemPerPage > 0) ? $itemPerPage : false;
+            $sort = $sort ?: 'id DESC';
+            $user->orderByRaw($sort);
+            $itemPerPage = ($itemPerPage > 0) ? $itemPerPage : false;
 
-        return $user->paginate($itemPerPage)->appends('sort', $sort);
-    }
+            return $user->paginate($itemPerPage)->appends('sort', $sort);
+        }
 
-    public function getById(int $id)
+    public function getById(string $id)
     {
         return $this->find($id);
     }
