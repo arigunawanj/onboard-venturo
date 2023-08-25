@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Traits\Uuid;
 use App\Repository\CrudInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -11,12 +12,20 @@ class ProductCategoryModel extends Model implements CrudInterface
 {
     use HasFactory;
     use SoftDeletes;
+    use Uuid;
 
     public $timestamps = true;
     protected $fillable = [
         'name', 'index'
 
     ];
+
+    protected $casts = [
+        'id' => 'string',
+    ];
+
+    public $incrementing = false;
+    
     protected $table = 'm_product_category';
 
     public function drop(string $id)

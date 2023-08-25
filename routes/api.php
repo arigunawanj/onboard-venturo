@@ -64,9 +64,10 @@ Route::prefix('v1')->group(function () {
     Route::put('/vouchers', [VoucherController::class, 'update']);
     Route::delete('/vouchers/{id}', [VoucherController::class, 'destroy']);
 
-    Route::get('/diskon', [DiskonController::class, 'index']);
-    Route::post('/diskon', [DiskonController::class, 'store']);
-    Route::put('/diskon', [DiskonController::class, 'update']);
+    Route::get('/discount', [DiskonController::class, 'index']);
+    Route::post('/discount', [DiskonController::class, 'store']);
+    Route::put('/discount', [DiskonController::class, 'update']);
+    Route::put('/discount/{id}', [DiskonController::class, 'show']);
 });
 
 Route::get('/', function () {

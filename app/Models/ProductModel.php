@@ -2,14 +2,20 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Http\Traits\Uuid;
+use App\Models\ProductDetailModel;
+use App\Models\ProductCategoryModel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ProductModel extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, Uuid;
 
+    public $incrementing = false;
+    protected $keyType = 'string';
+    protected $primaryKey = 'id';
     public $timestamps = true;
     protected $fillable = [
         'm_product_category_id',
@@ -20,30 +26,38 @@ class ProductModel extends Model
         'is_available'
     ];
     protected $table = 'm_product';
+    protected $casts = [
+        'id' => 'string',
+    ];
 
+    /**
+     * Relasi ke ProductCategory / tabel m_product_category
+     *
+     * @return void
+     */
     public function category()
     {
-        return $this->hasOne(ProductCategoryModel::class, 'id', 'm_product_category');
+        return $this->hasOne(ProductCategoryModel::class, 'id', 'm_product_category_id');
     }
 
+    /**
+     * Relasi ke ProductDetail / tabel m_product_category
+     *
+     * @return void
+     */
     public function details()
     {
         return $this->hasMany(ProductDetailModel::class, 'm_product_id', 'id');
     }
 
-    public function drop(int $id)
+    public function drop(string $id)
     {
         return $this->find($id)->delete();
     }
 
-    public function edit(array $payload, int $id)
+    public function edit(array $payload, string $id)
     {
         return $this->find($id)->update($payload);
-    }
-
-    public function store(array $payload)
-    {
-        return $this->create($payload);
     }
 
     public function getAll(array $filter, int $itemPerPage = 0, string $sort = '')
@@ -69,8 +83,13 @@ class ProductModel extends Model
         return $user->paginate($itemPerPage)->appends('sort', $sort);
     }
 
-    public function getById(int $id)
+    public function getById(string $id)
     {
         return $this->find($id);
+    }
+
+    public function store(array $payload)
+    {
+        return $this->create($payload);
     }
 }

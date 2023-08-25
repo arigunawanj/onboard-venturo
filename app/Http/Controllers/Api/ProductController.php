@@ -17,6 +17,19 @@ class ProductController extends Controller
         $this->product = new ProductHelper();
     }
 
+
+    public function destroy($id)
+    {
+        $product = $this->product->delete($id);
+
+        if (!$product['status']) {
+            return response()->failed(['Mohon maaf product tidak ditemukan']);
+        }
+
+        return response()->success($product, 'product berhasil dihapus');
+    }
+
+
     public function index(Request $request)
     {
         $filter = [
@@ -29,12 +42,19 @@ class ProductController extends Controller
         return response()->success(new ProductCollection($products['data']));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
+    public function show($id)
+    {
+        $product = $this->product->getById($id);
+
+        if (!($product['status'])) {
+            return response()->failed(['Data product tidak ditemukan'], 404);
+        }
+
+        return response()->success(new ProductResource($product['data']));
+    }
+
+
     public function store(ProductRequest $request)
     {
         if (isset($request->validator) && $request->validator->fails()) {
@@ -61,30 +81,7 @@ class ProductController extends Controller
         return response()->success(new ProductResource($product['data']), 'product berhasil ditambahkan');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $product = $this->product->getById($id);
 
-        if (!($product['status'])) {
-            return response()->failed(['Data product tidak ditemukan'], 404);
-        }
-
-        return response()->success(new ProductResource($product['data']));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(ProductRequest $request)
     {
         if (isset($request->validator) && $request->validator->fails()) {
@@ -111,22 +108,5 @@ class ProductController extends Controller
         }
 
         return response()->success(new ProductResource($product['data']), 'product berhasil diubah');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        $product = $this->product->delete($id);
-
-        if (!$product['status']) {
-            return response()->failed(['Mohon maaf product tidak ditemukan']);
-        }
-
-        return response()->success($product, 'product berhasil dihapus');
     }
 }

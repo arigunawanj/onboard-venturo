@@ -19,6 +19,7 @@ class ProductHelper extends Venturo
         $this->productDetail = new ProductDetailModel();
     }
 
+
     private function uploadAndGetPayload(array $payload)
     {
         if (!empty($payload['photo'])) {
@@ -31,6 +32,7 @@ class ProductHelper extends Venturo
 
         return $payload;
     }
+
 
     public function create(array $payload): array
     {
@@ -59,7 +61,8 @@ class ProductHelper extends Venturo
         }
     }
 
-    public function delete(int $productId)
+
+    public function delete(string $productId)
     {
         try {
             $this->beginTransaction();
@@ -95,7 +98,7 @@ class ProductHelper extends Venturo
     }
 
 
-    public function getById(int $id): array
+    public function getById(string $id): array
     {
         $product = $this->product->getById($id);
         if (empty($product)) {
@@ -121,7 +124,7 @@ class ProductHelper extends Venturo
             $this->product->edit($payload, $payload['id']);
 
             $this->insertUpdateDetail($payload['details'] ?? [], $payload['id']);
-            // $this->deleteDetail($payload['details_deleted'] ?? []);
+            $this->deleteDetail($payload['details_deleted'] ?? []);
 
             $product = $this->getById($payload['id']);
             $this->commitTransaction();
@@ -140,7 +143,20 @@ class ProductHelper extends Venturo
         }
     }
 
-    private function insertUpdateDetail(array $details, int $productId)
+    private function deleteDetail(array $details)
+    {
+        if (empty($details)) {
+            return false;
+        }
+
+        foreach ($details as $val) {
+            $this->productDetail->drop($val['id']);
+        }
+    }
+
+
+
+    private function insertUpdateDetail(array $details, string $productId)
     {
         if (empty($details)) {
             return false;

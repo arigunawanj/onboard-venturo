@@ -14,20 +14,23 @@ class CreateMProductDetail extends Migration
     public function up()
     {
         Schema::create('m_product_detail', function (Blueprint $table) {
-            $table->id();
-            $table->bigInteger('m_product_id')
-                    ->comment('Fill with id from table m_product');
+            $table->uuid('id')->primary();
+            $table->string('m_product_id')
+                ->comment('Fill with id from table m_product');
             $table->enum('type', ['Level', 'Toping'])
-                    ->comment('Fill with type of detail product');
-            $table->string('description', 255)
-                    ->comment('Fill with description of detail product, ex : Topping Telur');
+                ->comment('Fill with type of detail product');
             $table->double('price')
-                    ->comment('Fill price of product');
+                ->default(0)
+                ->comment('Fill with price of product detail')
+                ->nullable();
+            $table->string('description', 255)
+                ->comment('Fill with description of detail product, ex : Topping Telur');
             $table->timestamps();
             $table->softDeletes();
             $table->integer('created_by')->default(0);
             $table->integer('updated_by')->default(0);
             $table->integer('deleted_by')->default(0);
+
 
             $table->index('m_product_id');
 

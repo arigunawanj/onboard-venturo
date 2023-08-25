@@ -55,7 +55,7 @@ class ProductCategoryController extends Controller
             return response()->failed($request->validator->errors());
         }
 
-        $payload = $request->only(['name']);
+        $payload = $request->only(['name', 'id']);
         $category = $this->category->create($payload);
 
         if (!$category['status']) {

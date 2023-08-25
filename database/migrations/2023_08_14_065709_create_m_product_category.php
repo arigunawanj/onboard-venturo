@@ -14,16 +14,18 @@ class CreateMProductCategory extends Migration
     public function up()
     {
         Schema::create('m_product_category', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('name', 150)
                     ->comment('Fill with name of product category');
-             $table->integer('index')
-                     ->comment('fill with index for ordering');
             $table->timestamps();
             $table->softDeletes();
             $table->integer('created_by')->default(0);
             $table->integer('updated_by')->default(0);
             $table->integer('deleted_by')->default(0);
+            $table->integer('index')
+                ->default(0)
+                ->comment('Fill with index of product categories')
+                ->nullable();
 
             $table->index('name');
 
