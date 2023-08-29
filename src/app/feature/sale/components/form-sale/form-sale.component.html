@@ -1,0 +1,151 @@
+<div class="">
+    <p class="fs-5">Detail Order</p>
+    
+</div>
+<br *ngIf="!customer">
+<div class="d-flex">
+    <div class="me-auto" *ngIf="customer">
+        <p class="text-primary fw-bold fs-3">{{ customer.name }}</p>
+    </div>
+    <div *ngIf="customer">
+        <a href="javascript: void(0);" class="align-middle mr-2" placement="left" (click)="updateCustomer(formCustomer)"
+            container="body" ngbTooltip="Ubah">
+            <em class="fa fa-edit fs-3"></em>
+        </a>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row d-flex justify-content-center align-items-center">
+        <div class="col" *ngIf="customer">
+            <p class="fs-5">Promo</p>
+        </div>
+        <div class="col" *ngIf="voucher.id">
+            <div class="promo-container">
+                <div class="center-promo">
+                    <span class="text-primary fs-3 fw-bold">Rp {{ voucher.nominal_rupiah | number }}</span>
+                    <p class="fs-6">{{ voucher.promo_name }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col" *ngIf="discount.id">
+            <div class="promo-container">
+                <div class="center-promo">
+                    <span class="text-primary fs-3 fw-bold">{{ discount.nominal_percentage != null ? discount.nominal_percentage + ' %' : '-' }}</span>
+                    <p class="fs-6">{{ discount.promo_name }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+</div>
+
+<div class="container" style="border-top: 0.1px solid #e4e4e4;border-bottom: 0.1px solid #e4e4e4; min-height: 148px;">
+    <br>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="product-container mb-3" *ngFor="let product of menu; index as i">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="upload-image-container">
+                            <div class="image-picker">
+                                <div class="image-ready center" *ngIf="product.photo_url">
+                                    <img src="{{product.photo_url}}" alt="" class="img-fluid" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mt-2">
+                            <span class="fw-bold fs-4">{{ product.name }}</span><br>
+                            <p class="text-primary fw-bold">Rp {{ product.price | number }}</p>
+                            <div *ngIf="product.details.length > 0">
+                                <div class="d-flex">
+                                    <div  *ngFor="let details of product.details; index as i">
+                                        <em class="fa fa-sticky-note mt-1"></em> Catatan : {{ details.description }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center" style="align-self: center;">
+                        <div style="margin-top: 20%; margin-top: -17px;">
+                            <button class="btn btn-outline-secondary"
+                                style="--bs-btn-padding-x: 0rem;--bs-btn-padding-y: 0rem;"
+                                (click)="penguranganItem(product, i)">
+                                <!-- <b>-</b> -->
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    class="bi bi-dash-lg" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd"
+                                        d="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8Z" />
+                                </svg>
+                            </button>
+                            <b>&nbsp;&nbsp; {{ product.total_item }} &nbsp;&nbsp;</b>
+                            <button class="btn btn-primary" style="--bs-btn-padding-x: 0rem;--bs-btn-padding-y: 0rem;"
+                                (click)="penambahanItem(product)">
+                                <!-- <b>+</b> -->
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd"
+                                        d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<hr>
+<p class="fs-4 fw-bold">Detail Pembayaran</p>
+<div class="d-flex justify-content-between mb-2">
+    <div>Subtotal</div>
+    <div>Rp {{subtotalFunction(menu) | number}}</div>
+</div>
+<div class="d-flex justify-content-between mb-2">
+    <div>Tax 11%</div>
+    <div>Rp {{taxFunction(menu) | number}}</div>
+</div>
+<div class="d-flex justify-content-between mb-2">
+    <div>Diskon {{discount.nominal_percentage}}%</div>
+    <div>{{ discount.nominal_percentage }}% {{
+        discount.promo_name }}</div>
+</div>
+<div class="d-flex justify-content-between mb-2">
+    <div>Voucher <p class="fs-6 text-end">{{voucher.promo_name}}</p></div>
+    <div>-Rp {{ voucher.nominal_rupiah | number }}</div>
+</div>
+
+<hr>
+<div class="d-flex justify-content-between" style="border-top: 0.1px dashed #e4e4e4; margin-top: -40px;">
+    <div style="margin-top: 5px;">
+        <b style="color: black; font-size: 15px;">Total Pembayaran</b>
+    </div>
+    <div style="margin-top: 5px;">
+        <b style="color: black; font-size: 15px;">
+            <p style="float: right;">Rp. {{ (subtotalFunction(menu) + taxFunction(menu)) - discountNominal(menu) -
+                voucher.nominal_rupiah| number }}</p>
+        </b>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <button class="btn btn-primary" style="width: 100%; margin-top: -12px;" (click)="isiForm()"><b>+ Tambah
+                    Pesanan</b></button>
+        </div>
+    </div>
+</div>
+
+<ng-template #formCustomer let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title mt-0">{{ titleModal }}</h5>
+        <button type="button" class="close" (click)="modal.close()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <app-form-customer [customerId]="customerId" (afterSave)="modal.close();"></app-form-customer>
+    </div>
+</ng-template>

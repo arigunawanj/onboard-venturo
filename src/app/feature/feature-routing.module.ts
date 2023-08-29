@@ -9,6 +9,9 @@ import { ListProductComponent } from './product/product/components/list-product/
 import { ListPromoComponent } from './promo/components/list-promo/list-promo.component';
 import { ListVoucherComponent } from './promo/voucher/components/list-voucher/list-voucher.component';
 import { ListDiskonComponent } from './promo/diskon/components/list-diskon/list-diskon.component';
+import { ListSaleComponent } from './sale/components/list-sale/list-sale.component';
+import { SalesPromoComponent } from './report/components/sales-promo/sales-promo.component';
+import { SalesTransactionComponent } from './report/components/sales-transaction/sales-transaction.component';
 
 const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -21,6 +24,9 @@ const routes: Routes = [
     { path: 'promo', component: ListPromoComponent },
     { path: 'voucher', component: ListVoucherComponent },
     { path: 'diskon', component: ListDiskonComponent },
+    { path: 'sale', component: ListSaleComponent },
+    { path: 'report/sales-promo', component: SalesPromoComponent },
+    { path: 'report/penjualan', component: SalesTransactionComponent },
 
 ];
 

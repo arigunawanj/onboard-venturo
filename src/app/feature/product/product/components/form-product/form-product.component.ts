@@ -16,7 +16,6 @@ import { CategoryService } from "../../../category/services/category.service";
   styleUrls: ["./form-product.component.scss"],
 })
 export class FormProductComponent {
-  readonly DEFAULT_STATUS = '1';
   readonly DEFAULT_TYPE = 'Toping';
   readonly MODE_CREATE = 'add';
   readonly MODE_UPDATE = 'update';
@@ -27,18 +26,19 @@ export class FormProductComponent {
   configEditor = ClassicEditor;
   activeMode: string;
   categories: [];
+  allCategories=[];
   showLoading: boolean;
   formModel: {
-    id: number,
+    id: string,
     name: string,
     product_category_id: number,
     price: string,
     description: string,
     photo: string,
     photo_url: string,
-    is_available: string,
+    is_available: number,
     details: any,
-    details_deleted: any
+    details_deleted: any,
   }
 
   constructor(
@@ -47,7 +47,16 @@ export class FormProductComponent {
     private landaService: LandaService,
   ) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
+
+
+  getAllCategories(){
+    this.productService.getCategory().subscribe((res:any)=>{
+      this.allCategories= res.data.list;
+    }, err=>{
+      console.log(err);
+    });
+  }
 
   ngOnChanges(changes: SimpleChange) {
     this.resetForm();
@@ -69,20 +78,21 @@ export class FormProductComponent {
 
   resetForm() {
     this.getCategories();
+    this.getAllCategories();
     this.formModel = {
-      id: 0,
+      id: '',
       name: '',
-      product_category_id: null,
+      product_category_id: 0,
       price: '',
       description: '',
       photo: '',
       photo_url: '',
-      is_available: this.DEFAULT_STATUS,
+      is_available: null,
       details: [],
-      details_deleted: []
+      details_deleted: [],
     }
 
-    if (this.productId > 0) {
+    if (this.productId != 0) {
       this.activeMode = this.MODE_UPDATE;
       this.getProduct(this.productId);
       return true;
@@ -92,8 +102,7 @@ export class FormProductComponent {
   }
 
   getProduct(productId) {
-
-    this.productService.getProductId(productId).subscribe((res: any) => {
+    this.productService.getProductById(productId).subscribe((res: any) => {
       this.formModel = res.data;
     }, err => {
       console.log(err);
@@ -116,7 +125,7 @@ export class FormProductComponent {
       this.landaService.alertSuccess('Berhasil', res.message);
       this.afterSave.emit();
     }, err => {
-      this.landaService.alertError('Mohon Maaf', err.error.errors);
+      this.landaService.alertError('Mohon Maaf', err.error);
     });
   }
 
@@ -133,8 +142,9 @@ export class FormProductComponent {
     let val = {
       is_added: true,
       description: '',
-      type: this.DEFAULT_TYPE,
+      type: '',
       price: 0,
+      m_product_id:''
     }
     this.formModel.details.push(val);
   }
@@ -151,5 +161,6 @@ export class FormProductComponent {
       details.is_updated = true;
     }
   }
+
 
 }

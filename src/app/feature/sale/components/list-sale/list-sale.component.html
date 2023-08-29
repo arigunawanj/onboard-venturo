@@ -1,0 +1,90 @@
+<ng-template #formProduct let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title mt-0">{{ titleModal }}</h5>
+        <button type="button" class="close" (click)="modal.close()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <app-form-product [productId]="productId" (afterSave)="modal.close(); getProducts()"></app-form-product>
+    </div>
+</ng-template>
+
+<div class="container-fluid" style="margin-top: -10px;">
+    <div class="card-body d-flex justify-content-between">
+        <div class="d-flex justify-content-start">
+            <form class="row">
+                <div class="form-group col-md-6" style="padding-right: 0.1px;">
+                    <ng-select [items]="customers" [searchable]="false" [placeholder]="chosenCustomer ? '':'Pilih Nama Customer'"  (change)="addCustomer()" name="customer_id" [(ngModel)]="chosenCustomer" bindLabel="name" bindValue="id"></ng-select>
+                </div>
+                <div class="form-group col-md-6">
+                    <div class="input-group" style="min-width: 300px;">
+                        <ng-select style="min-width: 250px;" [multiple]="true" class=" border-end-0" [searchable]="!false" [placeholder]="!filter_product.name ? 'Pilih Nama Produk':''" (change)="filterByProducts($event)" bindLabel="name" bindValue="id" [items]="products" [closeOnSelect]="false" [searchable]="false" name="product_id" [loading]="showLoading"></ng-select>
+                        <span class="input-group-text border-start-0 bg-white" (click)="getProducts()">
+                            <em class="fa fa-search" style="height: 0.7em;"></em>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid" style="margin-top: -20px;">
+    <div class="row">
+        <div class="col-12 col-sm-12 col-md-6 col-lg-8 col-xl-8">
+            <div class="card card-transparent">
+                <div class="card-header"></div>
+                <div class="card-body" style="box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3); border-radius: 6px;">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12 col-sm-6 col-md-6 col-lg-3 col-xl-3" *ngFor="let menu of productsItems">
+                                <div class="upload-image-container mb-3 custom-name-price" style="background-color: #f6f6f6; border-radius: 10px;">
+                                    <div class="d-flex justify-content-end">
+                                        <a href="javascript: void(0);" class="align-middle mr-2 btn btn-primary" placement="left" (click)="updateProduct(formProduct, menu)" container="body" ngbTooltip="Ubah">
+                                            <em class="fa fa-edit font-size-14 text-white" style="color: #c2c2c2;"></em>
+                                        </a>
+                                    </div>
+                                    <div class="image-picker" (click)="addMenu(menu)" *ngIf="menu.isChoices==false">
+                                        <div class="no-image center" *ngIf="!menu.photo_url">
+                                            <em class="fa fa-image" style="font-size: 90px;"></em>
+                                            <h4 class="text-center" *ngIf="!menu.name">Nasi Goreng</h4>
+                                            <b class="text-primary" *ngIf="!menu.price">Rp 12.000</b>
+                                        </div>
+                                        <div class="image-ready text-center" *ngIf="menu.photo_url">
+                                            <img class="img-fluid" src="{{menu.photo_url}}" alt="" />
+                                            <h4 class="text-center mt-3" *ngIf="menu.name">{{ menu.name }}</h4>
+                                            <b class="text-primary mb-3 text-center" *ngIf="menu.price">Rp {{ menu.price | number}}</b>
+                                        </div>
+                                    </div>
+                                    <div class="image-picker" (click)="returnMenu(menu)" *ngIf="menu.isChoices==true">
+                                        <div class="no-image center" *ngIf="!menu.photo_url">
+                                            <em class="fa fa-image" style="font-size: 90px; opacity: 50%;"></em>
+                                            <h4 class="text-center" *ngIf="!menu.name" style="opacity: 50%;">Nasi Goreng</h4>
+                                            <b class="text-primary text-center" *ngIf="!menu.price" style="opacity: 50%;">Rp 12.000</b>
+                                        </div>
+                                        <div class="image-ready text-center" *ngIf="menu.photo_url">
+                                            <img class="text-center img-fluid" src="{{menu.photo_url}}" alt="" style="opacity: 50%;"/>
+                                            <h4 class="text-center mt-3" *ngIf="menu.name" style="opacity: 50%;">{{ menu.name }}</h4>
+                                            <b class="text-primary text-center mb-3" *ngIf="menu.price" style="opacity: 50%;">Rp {{ menu.price | number}}</b>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <ngb-pagination class="d-flex justify-content-center" [(page)]="page" [pageSize]="pageSize" [collectionSize]="collectionSize" (pageChange)="refreshCountries()"></ngb-pagination>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
+            <div class="card card-transparent">
+                <div class="card-header"></div>
+                <div class="card-body">
+                    <app-form-sale  [customer]="dataCustomer" [menu]="chosenMenu" [voucher]="voucher" [discount]="discount"></app-form-sale>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

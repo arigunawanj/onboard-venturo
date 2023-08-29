@@ -72,7 +72,7 @@ export class DaterangepickerComponent implements OnInit {
   setDefaultValue() {
     if (!this.model.startDate && !this.model.endDate) {
       this.model.daterange = '';
-      return false;
+      return false;;
     }
 
     const { startDate, endDate } = this.model;
@@ -86,6 +86,17 @@ export class DaterangepickerComponent implements OnInit {
     });
   }
 
+  resetDate() {
+    this.onChange.emit({
+      placeholder: '',
+      startDate: null,
+      endDate: null,
+      showRange: false,
+      daterange: ''
+    });
+
+  }
+
   appendRangeConfiguration() {
     this.dateRangePickerOptions.settings.ranges = {
       'Today': [moment(), moment()],
@@ -93,8 +104,9 @@ export class DaterangepickerComponent implements OnInit {
       'Last 7 Days': [moment().subtract(6, 'days'), moment()],
       'Last 30 Days': [moment().subtract(29, 'days'), moment()],
       'This Month': [moment().startOf('month'), moment().endOf('month')],
-      'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+      'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
     };
   }
+
 
 }

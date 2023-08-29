@@ -1,6 +1,8 @@
 <div class="input-group mr-2">
-        <span class="input-group-text">
-            <em class="fa fa-calendar"></em>
-        </span>
-    <input daterangepicker name="daterange" [(ngModel)]="model.daterange" (selected)="selectedDate($event)" type="text" class="form-control" placeholder="">
+    <span class="input-group-text" id="inputGroup-sizing-default"><em class="fa fa-calendar"></em></span>
+    <input aria-label="example input" daterangepicker name="daterange" [(ngModel)]="model.daterange"
+      (selected)="selectedDate($event)" type="text" class="form-control" placeholder=""
+      aria-describedby="inputGroup-sizing-default" />
+    <span class="input-group-text" id="inputGroup-sizing-default"><em class="fa fa-window-close"
+        (click)="resetDate()"></em></span>
 </div>

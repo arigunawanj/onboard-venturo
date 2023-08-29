@@ -11,7 +11,7 @@ export class ProductService {
     return this.landaService.DataGet('/v1/products', arrParameter);
   }
  
-  getProductId(id) {
+  getProductById(id) {
     return this.landaService.DataGet('/v1/products/' + id);
   }
  
@@ -26,5 +26,10 @@ export class ProductService {
   deleteProduct(id) {
     return this.landaService.DataDelete('/v1/products/' + id);
   }
+
+  getCategory(arrParameter={}){
+    return this.landaService.DataGet('/v1/categories', arrParameter);
+  }
+
  
 }

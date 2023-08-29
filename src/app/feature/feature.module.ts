@@ -11,6 +11,8 @@ import { TestModule } from './test/test.module';
 import { CustomerModule } from './customer/customer.module';
 import { ProductModule } from './product/product.module';
 import { PromoModule } from './promo/promo.module';
+import { SaleModule } from './sale/sale.module';
+import { ReportModule } from './report/report.module';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     suppressScrollX: true,
@@ -29,7 +31,9 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         TestModule,
         CustomerModule,
         ProductModule,
-        PromoModule
+        PromoModule,
+        SaleModule,
+        ReportModule
     ],
     providers: [
         {

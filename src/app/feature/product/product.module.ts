@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ListCategoryComponent } from './category/components/list-category/list-category.component';
 import { ListProductComponent } from './product/components/list-product/list-product.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DataTablesModule } from 'angular-datatables';
 import { SharedModule } from 'src/app/shared/shared.module';
@@ -22,6 +22,7 @@ import { FormProductComponent } from './product/components/form-product/form-pro
     FormCategoryComponent,
     FormProductComponent
   ],
+ 
   imports: [
     CommonModule,
     FormsModule,
@@ -32,7 +33,11 @@ import { FormProductComponent } from './product/components/form-product/form-pro
     CKEditorModule,
     NgSelectModule,
     DndModule,
+    ReactiveFormsModule
 
+  ],
+  exports:[
+    FormProductComponent
   ]
 })
 export class ProductModule { }

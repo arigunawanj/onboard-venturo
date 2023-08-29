@@ -16,18 +16,17 @@ import { AuthService } from '../../services/auth.service';
 export class LoginComponent implements OnInit, AfterViewInit {
 
     email: string;
-    password: string;
-    year: number = new Date().getFullYear();
+   password: string;
 
-    constructor(
-        private authService: AuthService,
-        private landaService: LandaService,
-        private router: Router,
-    ) {
-        if (this.authService.getToken() !== '') {
-            this.router.navigate(['/home']);
-        }
-    }
+  constructor(
+      private authService: AuthService,
+      private landaService: LandaService,
+      private router: Router,
+  ) {
+      if (this.authService.getToken() !== '') {
+          this.router.navigate(['/home']);
+      }
+  }
 
     ngOnInit() {
         this.authService.logout();
@@ -39,9 +38,12 @@ export class LoginComponent implements OnInit, AfterViewInit {
     login() {
         this.authService.login(this.email, this.password).subscribe((res: any) => {
             this.authService.saveToken(res.data.access_token);
-            this.router.navigate(['/home']);
+            this.authService.saveUserLogin();
+            setTimeout(() => {
+                this.router.navigate(['/home']);
+            }, 1000)
         }, (err: any) => {
             this.landaService.alertError('Mohon Maaf', err.error.errors);
         });
-    }
+      }
 }
