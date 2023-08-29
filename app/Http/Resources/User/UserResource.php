@@ -23,6 +23,7 @@ class UserResource extends JsonResource
             'updated_security' => $this->updated_security,
             'phone_number' => $this->phone_number,
             'user_roles_id' => (string) $this->user_roles_id,
+            'access' => isset($this->role->access) ? json_decode($this->role->access) : [],
         ];
     }
 }

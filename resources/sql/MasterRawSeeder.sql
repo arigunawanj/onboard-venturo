@@ -24,8 +24,8 @@ INSERT INTO `m_product_detail` (`id`, `m_product_id`, `type`, `description`, `pr
 
 
 INSERT INTO `m_promo` (`id`, `name`, `status`, `expired_in_day`, `nominal_percentage`, `nominal_rupiah`, `term_conditions`, `photo`, `created_at`, `updated_at`, `deleted_at`, `created_by`, `updated_by`, `deleted_by`) VALUES
-(1, 'Voucher Member Baru',  'voucher',  30, NULL,   20000,  NULL,   NULL,   '2022-11-28 07:19:58',  '2022-11-28 07:19:58',  NULL,   0,  0,  0),
-(2, 'Voucher Member Get Member',    'voucher',  30, NULL,   5000,   NULL,   NULL,   '2022-11-28 07:20:17',  '2022-11-28 07:20:17',  NULL,   0,  0,  0);
+(1, 'Voucher Member Baru',  'voucher',  30, NULL,   20000,  "hahahah",   "hihihi",   '2022-11-28 07:19:58',  '2022-11-28 07:19:58',  NULL,   0,  0,  0),
+(2, 'Voucher Member Get Member',    'voucher',  30, NULL,   5000,   "hihihi",   "hihihi",   '2022-11-28 07:20:17',  '2022-11-28 07:20:17',  NULL,   0,  0,  0);
 
 
 INSERT INTO `m_voucher` (`id`, `m_customer_id`, `m_promo_id`, `start_time`, `end_time`, `total_voucher`, `nominal_rupiah`, `photo`, `description`, `created_at`, `updated_at`, `deleted_at`, `created_by`, `updated_by`, `deleted_by`) VALUES

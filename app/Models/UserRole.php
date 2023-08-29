@@ -16,7 +16,7 @@ class UserRole extends Model implements CrudInterface
 
     protected $table = 'user_roles';
 
-    protected $guarded = ['id'];
+    protected $guarded = [];
 
     public $timestamps = true;
 

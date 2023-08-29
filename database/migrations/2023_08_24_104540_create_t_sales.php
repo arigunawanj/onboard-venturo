@@ -15,20 +15,15 @@ class CreateTSales extends Migration
     {
         Schema::create('t_sales', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->bigInteger('m_customer_id')
-                    ->comment('Fill with id of m_customer');
-            $table->bigInteger('m_voucher_id')
-                    ->comment('Fill with id of m_voucher')
-                    ->default(null)
-                    ->nullable();
-            $table->double('voucher_nominal')
-                    ->comment('Fill with nominal voucher in rupiah')
-                    ->default(0);
-            $table->bigInteger('m_discount_id')
-                    ->comment('Fill with id of m_discount')
-                    ->default(null)
-                    ->nullable();
-            $table->dateTime('date');
+            $table->string('m_customer_id')
+                ->comment('Fill with id of m_customer');
+            $table->string('m_voucher_id')->nullable()
+                ->comment('Fill with id of m_voucher_id');
+            $table->string('m_discount_id')->nullable()
+                ->comment('Fill with id of m_discount_id');
+            $table->double('voucher_nominal')->nullable()
+                ->comment('Fill with nominal of voucher');
+            $table->date('date');
             $table->timestamps();
             $table->softDeletes();
             $table->integer('created_by')->default(0);
@@ -38,6 +33,7 @@ class CreateTSales extends Migration
             $table->index('m_customer_id');
             $table->index('m_voucher_id');
             $table->index('m_discount_id');
+
 
         });
     }

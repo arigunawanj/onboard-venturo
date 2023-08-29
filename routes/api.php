@@ -1,13 +1,16 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\RoleController;
+use App\Http\Controllers\Api\SaleController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\PromoController;
+use App\Http\Controllers\Api\DiskonController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\VoucherController;
 use App\Http\Controllers\Api\CustomerController;
-use App\Http\Controllers\Api\DiskonController;
+use App\Http\Controllers\Api\ReportSalesController;
 use App\Http\Controllers\Api\ProductCategoryController;
 
 /*
@@ -68,6 +71,17 @@ Route::prefix('v1')->group(function () {
     Route::post('/discount', [DiskonController::class, 'store']);
     Route::put('/discount', [DiskonController::class, 'update']);
     Route::put('/discount/{id}', [DiskonController::class, 'show']);
+
+    Route::get('/sale', [SaleController::class, 'index']);
+    Route::post('/sale', [SaleController::class, 'store']);
+
+    Route::get('/report/sales-promo', [ReportSalesController::class, 'viewSalesPromo']);
+    Route::get('/report/sales-menu', [ReportSalesController::class, 'viewSalesCategories']);
+    Route::get('/download/sales-category', [ReportSalesController::class, 'viewSalesCategories']);
+
+
+    Route::post('/auth/login', [AuthController::class, 'login']);
+    Route::get('/auth/profile', [AuthController::class, 'profile'])->middleware(['auth.api']);
 });
 
 Route::get('/', function () {
