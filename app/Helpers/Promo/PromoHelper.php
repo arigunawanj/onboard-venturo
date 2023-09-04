@@ -7,8 +7,9 @@ use App\Models\Promo;
 use App\Helpers\Venturo;
 
 class PromoHelper extends Venturo {
-    private $promo;
     const PROMO_PHOTO_DIRECTORY = 'foto-promo';
+
+    private $promo;
 
     public function __construct()
     {
@@ -16,24 +17,30 @@ class PromoHelper extends Venturo {
     }
 
     /**
-     * method untuk menginput data baru ke tabel user_auth
+     * method untuk menginput data baru ke tabel m_promo
      *
-     * @author Ari Gunawan <arigunawanjatmiko@gmail.com>
+     * @author Wahyu Agung <wahyuagung26@email.com>
      *
      * @param array $payload
      *                       $payload['name'] = string
+     *                       $payload['status'] = string
+     *                       $payload['expired_in_day'] = number
+     *                       $payload['nominal_percentage'] = number
+     *                       $payload['nominal_rupiah'] = number
+     *                       $payload['term_conditions'] = string
+     *                       $payload['photo'] = string
      *
      * @return array
      */
     public function create(array $payload): array
     {
         try {
-            $payload = $this->uploadGetPayload($payload);
-            $role = $this->promo->store($payload);
+            $payload = $this->uploadAndGetPayload($payload);
+            $promo = $this->promo->store($payload);
 
             return [
                 'status' => true,
-                'data' => $role
+                'data' => $promo
             ];
         } catch (Throwable $th) {
             return [
@@ -44,11 +51,11 @@ class PromoHelper extends Venturo {
     }
 
     /**
-     * Menghapus data user dengan sistem "Soft Delete"
+     * Menghapus data promo dengan sistem "Soft Delete"
      * yaitu mengisi kolom deleted_at agar data tsb tidak
      * keselect waktu menggunakan Query
      *
-     * @param integer $id id dari tabel user_auth
+     * @param integer $id id dari tabel m_promo
      *
      * @return bool
      */
@@ -64,13 +71,13 @@ class PromoHelper extends Venturo {
     }
 
     /**
-     * Mengambil data user dari tabel user_auth
+     * Mengambil data promo dari tabel m_promo
      *
      * @author Wahyu Agung <wahyuagung26@gmail.com>
      *
      * @param array $filter
      *                      $filter['name'] = string
-     *                      $filter['email'] = string
+     *                      $filter['status'] = string
      * @param integer $itemPerPage jumlah data yang ditampilkan, kosongi jika ingin menampilkan semua data
      * @param string $sort nama kolom untuk melakukan sorting mysql beserta tipenya DESC / ASC
      *
@@ -78,25 +85,25 @@ class PromoHelper extends Venturo {
      */
     public function getAll(array $filter, int $itemPerPage = 0, string $sort = '')
     {
-        $roles = $this->promo->getAll($filter, $itemPerPage, $sort);
+        $promo = $this->promo->getAll($filter, $itemPerPage, $sort);
 
         return [
             'status' => true,
-            'data' => $roles
+            'data' => $promo
         ];
     }
 
     /**
-     * Mengambil 1 data user dari tabel user_auth
+     * Mengambil 1 data promo dari tabel m_promo
      *
-     * @param integer $id id dari tabel user_auth
+     * @param integer $id id dari tabel m_promo
      *
      * @return array
      */
     public function getById(string $id): array
     {
-        $role = $this->promo->getById($id);
-        if (empty($role)) {
+        $promo = $this->promo->getById($id);
+        if (empty($promo)) {
             return [
                 'status' => false,
                 'data' => null
@@ -105,33 +112,37 @@ class PromoHelper extends Venturo {
 
         return [
             'status' => true,
-            'data' => $role
+            'data' => $promo
         ];
     }
 
     /**
-     * method untuk mengubah user pada tabel user_auth
+     * method untuk mengubah promo pada tabel m_promo
      *
      * @author Wahyu Agung <wahyuagung26@email.com>
      *
      * @param array $payload
      *                       $payload['name'] = string
-     *                       $payload['email] = string
-     *                       $payload['password] = string
+     *                       $payload['status'] = string
+     *                       $payload['expired_in_day'] = number
+     *                       $payload['nominal_percentage'] = number
+     *                       $payload['nominal_rupiah'] = number
+     *                       $payload['term_conditions'] = string
+     *                       $payload['photo'] = string
      *
      * @return array
      */
     public function update(array $payload, string $id): array
     {
         try {
-            $payload = $this->uploadGetPayload($payload);
+            $payload = $this->uploadAndGetPayload($payload);
             $this->promo->edit($payload, $id);
 
-            $role = $this->getById($id);
+            $promo = $this->getById($id);
 
             return [
                 'status' => true,
-                'data' => $role['data']
+                'data' => $promo['data']
             ];
         } catch (Throwable $th) {
             return [
@@ -141,19 +152,20 @@ class PromoHelper extends Venturo {
         }
     }
 
-    private function uploadGetPayload(array $payload)
+    private function uploadAndGetPayload(array $payload)
     {
         /**
-         * Jika dalam payload terdapat base64 foto, maka Upload foto ke folder public/uploads/foto-user
+         * Jika dalam payload terdapat base64 foto, maka Upload foto ke folder public/uploads/foto-product
          */
         if (!empty($payload['photo'])) {
-            $fileName = $this->generateFileName($payload['photo'], 'USER_' . date('Ymdhis'));
+            $fileName = $this->generateFileName($payload['photo'], 'PROMO_' . date('Ymdhis'));
             $photo = $payload['photo']->storeAs(self::PROMO_PHOTO_DIRECTORY, $fileName, 'public');
             $payload['photo'] = $photo;
         } else {
-            unset($payload['photo']);
+            unset($payload['photo']); // Jika foto kosong, hapus dari array agar tidak diupdate
         }
 
         return $payload;
     }
+
 }

@@ -16,7 +16,7 @@ class DiskonModel extends Model implements CrudInterface
 
     protected $table = 'm_discount';
 
-    protected $guarded = ['id'];
+    protected $guarded = [];
     public $timestamps = true;
 
     public $incrementing = false;
@@ -52,7 +52,7 @@ class DiskonModel extends Model implements CrudInterface
         if (!empty($filter['m_customer_id']) && is_array($filter['m_customer_id'])) {
             $user->whereIn('m_customer_id', $filter['m_customer_id']);
         }
-    
+
 
         $sort = $sort ?: 'id DESC';
         $user->orderByRaw($sort);

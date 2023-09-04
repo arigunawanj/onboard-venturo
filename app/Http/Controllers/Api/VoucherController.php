@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 class VoucherController extends Controller
 {
     private $voucher;
-    
+
     public function __construct()
     {
         $this->voucher = new VoucherHelper();
@@ -57,7 +57,7 @@ class VoucherController extends Controller
 
         return response()->success(new VoucherResource($voucher['data']), 'voucher berhasil diubah');
     }
-    
+
     public function store(VoucherRequest $request)
     {
         if (isset($request->validator) && $request->validator->fails()) {
@@ -92,4 +92,5 @@ class VoucherController extends Controller
         unset($payload['promo_id']);
         return $payload;
     }
+
 }

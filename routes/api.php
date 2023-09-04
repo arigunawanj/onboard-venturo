@@ -78,6 +78,7 @@ Route::prefix('v1')->group(function () {
     Route::get('/report/sales-promo', [ReportSalesController::class, 'viewSalesPromo']);
     Route::get('/report/sales-menu', [ReportSalesController::class, 'viewSalesCategories']);
     Route::get('/download/sales-category', [ReportSalesController::class, 'viewSalesCategories']);
+    Route::get('/sale-transaction', [SaleController::class, 'saleTransaction']);
 
 
     Route::post('/auth/login', [AuthController::class, 'login']);

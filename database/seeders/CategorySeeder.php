@@ -25,7 +25,7 @@ class CategorySeeder extends Seeder
         ];
 
         foreach ($role as $nilai) {
-            ProductCategoryModel::insert([
+            ProductCategoryModel::create([
                 'id' => $nilai['id'],
                 'name' => $nilai['name'],
             ]);

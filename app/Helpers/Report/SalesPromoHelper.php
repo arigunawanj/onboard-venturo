@@ -7,21 +7,22 @@ use App\Models\SalesModel;
 
 class SalesPromoHelper extends Venturo
 {
-   private $sales;
+    private $sales;
 
-   public function __construct()
-   {
-       $this->sales = new SalesModel();
-   }
+    public function __construct()
+    {
+        $this->sales = new SalesModel();
+    }
 
-   public function get($startDate, $endDate, $customerId = [], $promoId = [])
-   {
-       $sales = $this->sales->getSalesPromo($startDate, $endDate, $customerId, $promoId);
+    public function get($startDate, $endDate, $customerId = [], $promoId = [])
+    {
+        $sales = $this->sales->getSalesPromo($startDate, $endDate, $customerId, $promoId);
 
-       return [
-           'status' => true,
-           'data'   => $sales
-       ];
-   }
+        return [
+            'status' => true,
+            'data'   => $sales
+        ];
+    }
+
 }
 

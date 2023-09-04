@@ -7,83 +7,84 @@ use Throwable;
 
 class VoucherHelper extends Venturo
 {
-  private $voucher;
+    private $voucher;
 
-  public function __construct()
-  {
-      $this->voucher = new VoucherModel();
-  }
+    public function __construct()
+    {
+        $this->voucher = new VoucherModel();
+    }
 
-  public function create(array $payload): array
-  {
-      try {
-          $voucher = $this->voucher->store($payload);
+    public function create(array $payload): array
+    {
+        try {
+            $voucher = $this->voucher->store($payload);
 
-          return [
-              'status' => true,
-              'data' => $voucher
-          ];
-      } catch (Throwable $th) {
-          return [
-              'status' => false,
-              'error' => $th->getMessage()
-          ];
-      }
-  }
+            return [
+                'status' => true,
+                'data' => $voucher
+            ];
+        } catch (Throwable $th) {
+            return [
+                'status' => false,
+                'error' => $th->getMessage()
+            ];
+        }
+    }
 
-  public function delete(string $id): bool
-  {
-      try {
-          $this->voucher->drop($id);
+    public function delete(string $id): bool
+    {
+        try {
+            $this->voucher->drop($id);
 
-          return true;
-      } catch (Throwable $th) {
-          return false;
-      }
-  }
+            return true;
+        } catch (Throwable $th) {
+            return false;
+        }
+    }
 
-  public function getAll(array $filter, int $itemPerPage = 0, string $sort = '')
-  {
-      $categories = $this->voucher->getAll($filter, $itemPerPage, $sort);
+    public function getAll(array $filter, int $itemPerPage = 0, string $sort = '')
+    {
+        $categories = $this->voucher->getAll($filter, $itemPerPage, $sort);
 
-      return [
-          'status' => true,
-          'data' => $categories
-      ];
-  }
+        return [
+            'status' => true,
+            'data' => $categories
+        ];
+    }
 
-  public function getById(string $id): array
-  {
-      $voucher = $this->voucher->getById($id);
-      if (empty($voucher)) {
-          return [
-              'status' => false,
-              'data' => null
-          ];
-      }
+    public function getById(string $id): array
+    {
+        $voucher = $this->voucher->getById($id);
+        if (empty($voucher)) {
+            return [
+                'status' => false,
+                'data' => null
+            ];
+        }
 
-      return [
-          'status' => true,
-          'data' => $voucher
-      ];
-  }
+        return [
+            'status' => true,
+            'data' => $voucher
+        ];
+    }
 
-  public function update(array $payload, string $id): array
-  {
-      try {
-          $this->voucher->edit($payload, $id);
+    public function update(array $payload, string $id): array
+    {
+        try {
+            $this->voucher->edit($payload, $id);
 
-          $voucher = $this->getById($id);
+            $voucher = $this->getById($id);
 
-          return [
-              'status' => true,
-              'data' => $voucher['data']
-          ];
-      } catch (Throwable $th) {
-          return [
-              'status' => false,
-              'error' => $th->getMessage()
-          ];
-      }
-  }
+            return [
+                'status' => true,
+                'data' => $voucher['data']
+            ];
+        } catch (Throwable $th) {
+            return [
+                'status' => false,
+                'error' => $th->getMessage()
+            ];
+        }
+    }
+
 }

@@ -49,7 +49,7 @@ class SalesModel extends Model implements CrudInterface
     }
 
     public function discount(){
-        return $this->belongsTo(DiskonModel::class, 'm_discount_id');
+        return $this->belongsTo(Promo::class, 'm_discount_id');
     }
 
     public function details(){
@@ -58,7 +58,7 @@ class SalesModel extends Model implements CrudInterface
 
     public function getAll($startDate, $endDate, $customer = [], $promo = [])
     {
-        $sales = $this->query()->with(['voucher', 'discount', 'customer', 'voucher.promo', 'discount.promo']);
+        $sales = $this->query()->with(['voucher', 'discount', 'customer', 'voucher.promo']);
 
         if (!empty($startDate) && !empty($endDate)) {
             $sales->whereRaw('date >= "' . $startDate . ' 00:00:01" and date <= "' . $endDate . ' 23:59:59"');
@@ -69,11 +69,11 @@ class SalesModel extends Model implements CrudInterface
         }
         if (!empty($promo)) {
             $sales->where(function ($query) use ($promo) {
-                        $query->whereIn('m_voucher_id',function ($query) use ($promo) {
-                            $query->select('m_voucher.id')->from('m_voucher')->whereIn('m_voucher.m_promo_id',$promo);
-                        })->orWhereIn('m_discount_id',function ($query) use ($promo) {
-                            $query->select('m_discount.id')->from('m_discount')->whereIn('m_discount.m_promo_id',$promo);
-                        });
+                $query->whereIn('m_voucher_id',function ($query) use ($promo) {
+                    $query->select('m_voucher.id')->from('m_voucher')->whereIn('m_voucher.m_promo_id',$promo);
+                // })->orWhereIn('m_discount_id',function ($query) use ($promo) {
+                //     $query->select('m_discount.id')->from('m_discount')->whereIn('m_discount.m_promo_id',$promo);
+                });
             });
         }
 
@@ -83,7 +83,8 @@ class SalesModel extends Model implements CrudInterface
     public function getSalesPromo($startDate, $endDate, $customer = [], $promo = [])
     {
 
-        $sales = $this->query()->with(['voucher', 'discount', 'customer', 'voucher.promo', 'discount.promo']);
+        $sales = $this->query()->with(['voucher', 'discount', 'customer', 'voucher.promo']);
+
 
         if (!empty($startDate) && !empty($endDate)) {
             $sales->whereRaw('date >= "' . $startDate . ' 00:00:01" and date <= "' . $endDate . ' 23:59:59"');
@@ -93,17 +94,19 @@ class SalesModel extends Model implements CrudInterface
             $sales->whereIn('m_customer_id', $customer);
         }
 
+
         if (!empty($promo)) {
             $sales->where(function ($query) use ($promo) {
-                        $query->whereIn('m_voucher_id',function ($query) use ($promo) {
-                            $query->select('m_voucher.id')->from('m_voucher')->whereIn('m_voucher.m_promo_id',$promo);
-                        })->orWhereIn('m_discount_id',function ($query) use ($promo) {
-                            $query->select('m_discount.id')->from('m_discount')->whereIn('m_discount.m_promo_id',$promo);
-                        });
+                $query->whereIn('m_voucher_id',function ($query) use ($promo) {
+                    $query->select('m_voucher.id')->from('m_voucher')->whereIn('m_voucher.m_promo_id',$promo);
+                })->orWhereIn('m_discount_id',function ($query) use ($promo) {
+                    $query->select('m_discount.id')->from('m_discount')->whereIn('m_discount.m_promo_id',$promo);
+                });
             });
         }
 
         $sales->whereNotNull('m_voucher_id')->orWhereNotNull('m_discount_id');
+        // dd($sales);
 
         return $sales->orderByDesc('date')->get();
     }

@@ -17,7 +17,9 @@ class SalesPromoResource extends JsonResource
        return [
            'date_transaction' => $this->date ?? null,
            'customer_name' => $this->customer->name ?? null,
-           'promo_name' => $this->voucher->promo->name ?? null,
+           'promo_name' => $this->voucher->promo->name ?? $this->discount->promo->name ?? null,
+           'promo_discount' => $this->discount ?? null,
+           'promo_voucher' => $this->voucher->promo->name ?? null
        ];
    }
 

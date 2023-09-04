@@ -16,13 +16,16 @@ class SaleDetailResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'sales_id' => $this->t_sales_id,
+            'date' => $this->sales->date,
+            'discount' => $this->sales->discount->promo->nominal_perecentage ?? null,
+            'voucher' => $this->sales->voucher->nominal_rupiah ?? null,
             'product_id' => $this->product->id ?? null,
             'product_name' => $this->product->name ?? null,
-            'product_detail_id' => $this->productDetail->id ?? null,
-            'product_detail_description' => $this->productDetail->description ?? null,
             'total_item' => $this->total_item,
             'discount_nominal' => $this->discount_nominal,
-            'price' => $this->price
+            'price' => $this->price,
+            'customer_name' => $this->sales->customer->name ?? null,
         ];
     }
 

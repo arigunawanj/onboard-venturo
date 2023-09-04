@@ -14,6 +14,16 @@ class SaleHelper extends Venturo{
         $this->salesDetail = new SalesDetailModel();
     }
 
+    public function getSaleTransaction(array $filter, int $itemPerPage = 0, string $sort = '')
+    {
+        $sales = $this->salesDetail->getAll($filter, $itemPerPage, $sort);
+
+        return [
+            'status' => true,
+            'data' => $sales
+        ];
+    }
+
     public function getAll($startDate, $endDate, $customerId = [], $promoId = [])
     {
         $sales = $this->sales->getAll($startDate, $endDate, $customerId, $promoId);

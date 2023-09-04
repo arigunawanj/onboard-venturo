@@ -21,13 +21,12 @@ class UpdateRequest extends FormRequest
     {
         return [
             'name' => 'Nama Pengguna',
-            'password' => 'Password',
             'email' => 'Email',
             'phone_number' => 'Nomor Telepon',
             'user_roles_id' => 'Role ID Pengguna'
         ];
     }
-    
+
     public function failedValidation(Validator $validator)
     {
        $this->validator = $validator;
@@ -40,7 +39,6 @@ class UpdateRequest extends FormRequest
             'name' => 'required|max:100',
             'photo' => 'nullable|file|image',
             'email' => 'required|email',
-            'password' => 'required|min:6',
             'phone_number' => 'numeric',
             'user_roles_id' => 'required'
         ];

@@ -142,7 +142,7 @@ class UserHelper extends Venturo
             }
 
             $payload = $this->uploadGetPayload($payload);
-            $this->userModel->edit($payload, '$id');
+            $this->userModel->edit($payload, $id);
 
             $user = $this->getById($id);
 
@@ -181,4 +181,5 @@ class UserHelper extends Venturo
 
         return $payload;
     }
+
 }

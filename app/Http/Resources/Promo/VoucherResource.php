@@ -28,6 +28,7 @@ class VoucherResource extends JsonResource
             'description' => $this->description,
             'photo' => $this->photo,
             'photo_url' => !empty($this->photo) ? Storage::disk('public')->url($this->photo) : Storage::disk('public')->url('../assets/img/no-image.png'),
+
         ];
     }
 }

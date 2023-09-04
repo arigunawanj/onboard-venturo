@@ -27,6 +27,9 @@ class ReportSalesController extends Controller
 
         $sales = $this->salesPromo->get($startDate, $endDate, $customerId, $promoId);
 
+        // $coba = json_decode($sales['data']);
+        // dd($sales);
+
         return response()->success(new SalesPromoCollection($sales['data']));
     }
 

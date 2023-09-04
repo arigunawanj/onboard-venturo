@@ -38,7 +38,7 @@ class ProductController extends Controller
             'is_available' => isset($request->is_available) ? $request->is_available : '',
         ];
         $products = $this->product->getAll($filter, $request->per_page ?? 25, $request->sort ?? '');
-
+        // dd($products);
         return response()->success(new ProductCollection($products['data']));
     }
 

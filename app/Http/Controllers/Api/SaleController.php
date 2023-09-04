@@ -10,8 +10,9 @@ use App\Exports\ReportSalesTransaction;
 use App\Http\Requests\Sale\SaleRequest;
 use App\Http\Resources\Sale\SaleResource;
 use App\Http\Resources\Sale\SaleCollection;
-use App\Models\Sales;
-use App\Models\SalesModel;
+use App\Http\Resources\Sale\SaleDetailCollection;
+use App\Http\Resources\Sale\SaleDetailResource;
+
 
 class SaleController extends Controller
 {
@@ -19,6 +20,33 @@ class SaleController extends Controller
     public function __construct()
     {
         $this->sales = new SaleHelper();
+    }
+
+    public function saleTransaction(Request $request)
+    {
+        $filter = [
+            'start_date' => isset($request->start_date) ? $request->start_date : '',
+            'end_date' => isset($request->end_date) ? $request->end_date : '',
+            'm_customer_id' => isset($request->customer_id) ? explode(',', $request->customer_id) : [],
+            'm_product_id' => isset($request->product_id) ? explode(',', $request->product_id) : [],
+        ];
+        // $startDate = $request->start_date ?? null;
+        // $endDate = $request->end_date ?? null;
+        // $customerId = isset($request->customer_id) ? explode(',', $request->customer_id) : [];
+        // $productId = isset($request->product_id) ? explode(',', $request->product_id) : [];
+        // $isExportExcel = $request->is_export_excel ?? null;
+        // $isExportPdf = $request->is_export_pdf ?? null;
+
+        $sales = $this->sales->getSaleTransaction($filter, $request->per_page ?? 25, $request->sort ?? '');
+
+        // if ($isExportExcel) {
+        //     return Excel::download(new ReportSalesTransaction($sales), 'report-sale-transaction.xls');
+        // }
+        // if ($isExportPdf) {
+        //     return Pdf::download(new ReportSalesTransaction($sales), 'report-sale-transaction.pdf');
+        // }
+
+        return response()->success(new SaleDetailCollection($sales['data']));
     }
 
     public function index(Request $request)
@@ -30,6 +58,7 @@ class SaleController extends Controller
         $isExportExcel = $request->is_export_excel ?? null;
 
         $sales = $this->sales->getAll($startDate, $endDate, $customerId, $promoId);
+
 
         if ($isExportExcel) {
             return Excel::download(new ReportSalesTransaction($sales), 'report-transaction.xls');

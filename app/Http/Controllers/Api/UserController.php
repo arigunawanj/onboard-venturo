@@ -104,12 +104,11 @@ class UserController extends Controller
          * Menampilkan pesan error ketika validasi gagal
          * pengaturan validasi bisa dilihat pada class app/Http/request/User/UpdateRequest
          */
-        
         if (isset($request->validator) && $request->validator->fails()) {
             return response()->failed($request->validator->errors());
         }
 
-        $payload = $request->only(['email', 'name', 'password', 'photo', 'phone_number', 'user_roles_id']);
+        $payload = $request->only(['email', 'name', 'password', 'id', 'photo', 'phone_number', 'user_roles_id']);
         $user = $this->user->update($payload, $payload['id'] ?? 0);
 
         if (!$user['status']) {
@@ -118,4 +117,5 @@ class UserController extends Controller
 
         return response()->success(new UserResource($user['data']), "User berhasil diubah");
     }
+
 }

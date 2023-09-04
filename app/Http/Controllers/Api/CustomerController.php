@@ -51,7 +51,7 @@ class CustomerController extends Controller
             return response()->failed($request->validator->errors());
         }
 
-        $payload = $request->only(['name', 'phone_number', 'email', 'photo']);
+        $payload = $request->only(['name', 'phone_number', 'email', 'photo', 'date_of_birth', 'is_verified']);
         $customer = $this->customer->create($payload);
 
         if (!$customer['status']) {
@@ -94,14 +94,14 @@ class CustomerController extends Controller
             return response()->failed($request->validator->errors());
         }
 
-        $payload = $request->only(['name', 'id', 'email', 'phone_number', 'photo']);
+        $payload = $request->only(['name', 'id', 'email', 'phone_number', 'photo', 'date_of_birth', 'is_verified']);
         $customer = $this->customer->update($payload, $payload['id'] ?? 0);
 
         if (!$customer['status']) {
             return response()->failed($customer['error']);
         }
 
-       
+
 
         return response()->success(new CustomerResource($customer['data']), "Customer berhasil diubah");
     }

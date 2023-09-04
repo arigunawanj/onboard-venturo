@@ -26,6 +26,7 @@ class ProductModel extends Model
         'is_available'
     ];
     protected $table = 'm_product';
+    
     protected $casts = [
         'id' => 'string',
     ];

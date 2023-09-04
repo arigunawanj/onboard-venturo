@@ -20,6 +20,7 @@ class CustomerResource extends JsonResource
             'email' => $this->email,
             'phone_number' => $this->phone_number,
             'is_verified' => $this->is_verified,
+            'date_of_birth' => $this->date_of_birth,
         ];
     }
 }
