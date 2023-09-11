@@ -12,6 +12,7 @@ import { ListDiskonComponent } from './promo/diskon/components/list-diskon/list-
 import { ListSaleComponent } from './sale/components/list-sale/list-sale.component';
 import { SalesPromoComponent } from './report/components/sales-promo/sales-promo.component';
 import { SalesTransactionComponent } from './report/components/sales-transaction/sales-transaction.component';
+import { SalesMenuComponent } from './report/components/sales-menu/sales-menu.component';
 
 const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -27,6 +28,8 @@ const routes: Routes = [
     { path: 'sale', component: ListSaleComponent },
     { path: 'report/sales-promo', component: SalesPromoComponent },
     { path: 'report/penjualan', component: SalesTransactionComponent },
+    { path: 'report/sales-menu', component: SalesMenuComponent },
+
 
 ];
 

@@ -10,16 +10,22 @@ import { CustomerService } from "../../services/customer.service";
   styleUrls: ['./list-customer.component.scss']
 })
 export class ListCustomerComponent implements OnInit {
+  listCustomers: any;
+  titleModal: string;
+  customerId: number;
+
+  showLoading: boolean;
   @ViewChild(DataTableDirective)
   dtElement: DataTableDirective;
   dtInstance: Promise<DataTables.Api>;
   dtOptions: any;
 
-  listCustomer: any;
-  titleModal: string;
-  customerId: number;
+  customers: [];
+
   filter: {
     name: "";
+    customer_id: any;
+    is_verified: "";
   };
 
   constructor(
@@ -27,23 +33,12 @@ export class ListCustomerComponent implements OnInit {
     private modalService: NgbModal
   ) {}
 
-  setDefault() {
-    this.filter = {
-      name: "",
-    };
-  }
-
-  ngOnInit(): void {
-    this.setDefault();
-    this.getCustomer();
-  }
-
   getCustomer() {
     this.dtOptions = {
       serverSide: true,
       processing: true,
       ordering: false,
-      pageLength: 25,
+      pageLength: 10,
       ajax: (dtParams: any, callback) => {
         const params = {
           ...this.filter,
@@ -56,8 +51,10 @@ export class ListCustomerComponent implements OnInit {
             const { list, meta } = res.data;
 
             let number = dtParams.start + 1;
-            list.forEach((val) => (val.no = number++));
-            this.listCustomer = list;
+            list.forEach((val) => {
+              val.no = number++;
+            });
+            this.listCustomers = list;
 
             callback({
               recordsTotal: meta.total,
@@ -71,6 +68,19 @@ export class ListCustomerComponent implements OnInit {
     };
   }
 
+  getCustomersList(name = "") {
+    this.showLoading = true;
+    this.customerService.getCustomers({ name: name }).subscribe(
+      (res: any) => {
+        this.customers = res.data.list;
+        this.showLoading = false;
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
+
   reloadDataTable(): void {
     this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
       dtInstance.draw();
@@ -78,34 +88,57 @@ export class ListCustomerComponent implements OnInit {
   }
 
   createCustomer(modalId) {
-    this.titleModal = 'Tambah Customer';
+    this.titleModal = "Tambah Customer";
     this.customerId = 0;
-    this.modalService.open(modalId, { size: 'lg', backdrop: 'static' });
+    this.modalService.open(modalId, { size: "lg", backdrop: "static" });
   }
 
   updateCustomer(modalId, customer) {
-    this.titleModal = 'Edit Customer: ' + customer.name;
+    this.titleModal = "Edit Customer: " + customer.name;
     this.customerId = customer.id;
-    this.modalService.open(modalId, { size: 'lg', backdrop: 'static' });
+    this.modalService.open(modalId, { size: "lg", backdrop: "static" });
   }
-
 
   deleteCustomer(customerId) {
     Swal.fire({
-      title: 'Apakah kamu yakin ?',
-      text: 'User ini tidak dapat login setelah kamu menghapus datanya',
-      icon: 'warning',
+      title: "Apakah kamu yakin ?",
+      text: "Customer ini tidak dapat membeli setelah kamu menghapus datanya",
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#34c38f',
-      cancelButtonColor: '#f46a6a',
-      confirmButtonText: 'Ya, Hapus data ini !',
+      confirmButtonColor: "#34c38f",
+      cancelButtonColor: "#f46a6a",
+      confirmButtonText: "Ya, Hapus data ini !",
     }).then((result) => {
       if (!result.value) return false;
 
       this.customerService.deleteCustomer(customerId).subscribe((res: any) => {
-        this.reloadDataTable();
+        this.getCustomer();
       });
     });
   }
+
+  setDefault() {
+    this.filter = {
+      name: "",
+      customer_id: "",
+      is_verified: null,
+    };
+  }
+
+  filterByCustomer(customers) {
+    let customersId = [];
+    customers.forEach((val) => customersId.push(val.id));
+    if (!customersId) return false;
+
+    this.filter.customer_id = customersId.join(",");
+    this.reloadDataTable();
+  }
+
+  ngOnInit(): void {
+    this.setDefault();
+    this.getCustomer();
+    this.getCustomersList();
+  }
+
   
 }

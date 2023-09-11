@@ -37,7 +37,7 @@ export class FormCategoryComponent implements OnInit {
       name: "",
     };
 
-    if (this.categoryId > 0) {
+    if (this.categoryId != 0) {
       this.activeMode = this.MODE_UPDATE;
       this.getCategory(this.categoryId);
       return true;

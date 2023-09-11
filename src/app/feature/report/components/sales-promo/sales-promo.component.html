@@ -26,9 +26,9 @@
                             </div>
                             <div class="form-group">
                                 <div class="input-group me-2">
-                                    <ng-select style="width: 270px;" [items]="customers" placeholder="Promo"
+                                    <ng-select style="width: 270px;" [items]="promos" placeholder="Promo"
                                         bindLabel="name" bindValue="id" [loading]="showLoading" [searchable]="false"
-                                        name="customer_id" (change)="setFilterPromo($event)" [multiple]="true">
+                                        name="promo_name" (change)="setFilterPromo($event)" [multiple]="true">
                                         <ng-template ng-header-tmp>
                                             <input class="form-control" type="text" debounceKeyUp
                                                 (onEvent)="getPromos($any($event.target).value)" />

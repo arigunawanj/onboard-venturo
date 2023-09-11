@@ -8,11 +8,13 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { CoreModule } from "src/app/core/core.module";
 import { SalesTransactionComponent } from './components/sales-transaction/sales-transaction.component';
 import { DataTablesModule } from "angular-datatables";
+import { SalesMenuComponent } from './components/sales-menu/sales-menu.component';
 
 @NgModule({
   declarations: [
     SalesPromoComponent,
-    SalesTransactionComponent
+    SalesTransactionComponent,
+    SalesMenuComponent
   ],
   imports: [
     CommonModule,

@@ -2,62 +2,63 @@
     <div class="form-group row mt-3">
         <div class="col-md-4"></div>
         <div class="col-md-4">
-     <app-upload-image 
-     [defaultImage]="formModel.photo_url" 
-     [ratioHigh]="4" 
-     [ratioWidth]="3" 
-     (onSubmit)="getCroppedImage($event)">
-     </app-upload-image>
+            <app-upload-image [defaultImage]="formModel.photo_url" [ratioHigh]="4" [ratioWidth]="3"
+                (onSubmit)="getCroppedImage($event)">
+            </app-upload-image>
         </div>
         <div class="col-md-4"></div>
-     </div>
-     <hr>
-  <div class="form-group row">
-      <label class="col-md-4 required">Nama</label>
-      <div class="col-md-8">
-          <input [(ngModel)]="formModel.name" type="text" name="name" class="form-control"
-              placeholder="Nama Pengguna" [ngClass]="{ 'disabled' : isDisabledForm}">
-      </div>
-  </div>
-  <div class="form-group row">
-      <label class="col-md-4 required">Email</label>
-      <div class="col-md-8">
-          <input [(ngModel)]="formModel.email" type="email" name="email" class="form-control"
-              placeholder="Email Pengguna">
-      </div>
-  </div>
-  <div class="form-group row">
-      <label class="col-md-4">Password</label>
-      <div class="col-md-8">
-          <input [(ngModel)]="formModel.password" type="password" name="password" class="form-control"
-              placeholder="Password" [ngClass]="{ 'disabled' : isDisabledForm}">
-          <small class="form-text text-muted" *ngIf="activeMode == MODE_UPDATE">Kosongi password jika tidak
-              diubah
-          </small>
-      </div>
-  </div>
-  <div class="form-group row">
-    <label class="col-md-4">Phone Number</label>
-    <div class="col-md-8">
-        <input [(ngModel)]="formModel.phone_number" type="text" name="phone_number" class="form-control"
-            placeholder="No Telepon">
     </div>
- </div>
-  <div class="form-group row">
-    <label class="col-md-4">Status</label>
-    <div class="col-md-8">
-        <div class="btn-group btn-group-toggle">
-            <label class="btn btn-primary" *ngFor="let role of roles;">
-                <input type="radio" class="btn-check" name="user_roles_id" [(ngModel)]="formModel.user_roles_id" value="{{role.id}}"> {{role.name}}
-            </label>
-          
+    <hr>
+    <div class="form-group row">
+        <label class="col-md-4 required">Nama</label>
+        <div class="col-md-8">
+            <input [(ngModel)]="formModel.name" type="text" name="name" class="form-control"
+                placeholder="Nama Pengguna">
         </div>
     </div>
- </div>
-  <div class="form-group row">
-      <label class="col-md-4"></label>
-      <div class="col-md-8">
-          <button type="button" class="btn btn-primary" (click)="save()" [ngClass]="{ 'disabled' : isDisabledForm}" ><em class="fa fa-save"></em> Simpan</button>
-      </div>
-  </div>
+    <div class="form-group row">
+        <label class="col-md-4 required">Email</label>
+        <div class="col-md-8">
+            <input [(ngModel)]="formModel.email" type="email" name="email" class="form-control"
+                placeholder="Email Pengguna">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-4">Phone Number</label>
+        <div class="col-md-8">
+            <input [(ngModel)]="formModel.phone_number" type="text" name="phone_number" class="form-control"
+                placeholder="No Telepon">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-4">Password</label>
+        <div class="col-md-8">
+            <input [(ngModel)]="formModel.password" type="password" name="password" class="form-control"
+                placeholder="Password">
+            <small class="form-text text-muted" *ngIf="activeMode == MODE_UPDATE">Kosongi password jika tidak
+                diubah
+            </small>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-4">Status</label>
+        <div class="col-md-8">
+            <div class="btn-group btn-group-toggle" ngbRadioGroup>
+                <div class="btn-group" role="group" aria-label="Basic radio toggle button group"
+                    *ngFor="let role of roles;">
+                    <input type="radio" class="btn-check" [(ngModel)]="formModel.user_roles_id" name="user_roles_id"
+                        id="{{role['id']}}" value="{{role['id']}}" autocomplete="off"
+                        [checked]="formModel.user_roles_id === role['id']">
+                    <label class="btn btn-primary" for="{{role['id']}}">{{role['name']}}</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-md-4"></label>
+        <div class="col-md-8">
+            <button type="submit" class="btn btn-primary" (click)="save()">Simpan</button>
+        </div>
+    </div>
 </form>

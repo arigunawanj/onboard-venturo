@@ -15,61 +15,39 @@ import { UserService } from "../../services/user.service";
   styleUrls: ["./form-user.component.scss"],
 })
 export class FormUserComponent implements OnInit {
-  readonly MODE_CREATE = "add";
-  readonly MODE_UPDATE = "update";
-
   @Input() userId: number;
   @Output() afterSave = new EventEmitter<boolean>();
+  readonly MODE_CREATE = 'add';
+  readonly MODE_UPDATE = 'update';
 
   activeMode: string;
-  roles: any;
-  isDisabledForm: any;
+
+  roles: [];
   formModel: {
-    id: number;
-    name: string;
-    email: string;
-    password: string;
-    phone_number: string;
-    user_roles_id: string;
-    photo: string;
-    photo_url: string;
-  };
+    id: number,
+    name: string,
+    email: string,
+    password: string,
+    phone_number: string,
+    user_roles_id: string,
+    photo: string,
+    photo_url: string
+  }
 
   constructor(
     private userService: UserService,
     private landaService: LandaService
-  ) {}
-
-  ngOnInit(): void {}
-
-  ngOnChanges(changes: SimpleChange) {
-    this.resetForm();
+  ) { }
+  ngOnInit(): void {
   }
 
-  getCroppedImage($event) {
-    this.formModel.photo = $event;
-  }
+  getUser(userId) {
 
-  resetForm() {
-    this.getRoles();
-    this.formModel = {
-      id: 0,
-      name: "",
-      email: "",
-      password: "",
-      phone_number: "",
-      user_roles_id: "",
-      photo: "",
-      photo_url: "",
-    };
-
-    if (this.userId != 0) {
-      this.activeMode = this.MODE_UPDATE;
-      this.getUser(this.userId);
-      return true;
-    }
-
-    this.activeMode = this.MODE_CREATE;
+    this.userService.getUserById(userId).subscribe((res: any) => {
+      this.formModel = res.data;
+    }, err => {
+      console.log(err);
+    });
   }
 
   getRoles() {
@@ -80,15 +58,27 @@ export class FormUserComponent implements OnInit {
     });
   }
 
+  resetForm() {
+    this.getRoles();
+    this.formModel = {
+      id: 0,
+      name: '',
+      email: '',
+      password: '',
+      phone_number: '',
+      user_roles_id: '',
+      photo: '',
+      photo_url: '',
+    }
 
-  getUser(userId) {
-    this.userService.getUserById(userId).subscribe((res: any) => {
-      this.formModel = res.data;
-    }, err => {
-      console.log(err);
-    });
+    if (this.userId != 0) {
+      this.activeMode = this.MODE_UPDATE;
+      this.getUser(this.userId);
+      return true;
+    }
+
+    this.activeMode = this.MODE_CREATE;
   }
-
 
   save() {
     switch (this.activeMode) {
@@ -101,46 +91,31 @@ export class FormUserComponent implements OnInit {
     }
   }
 
-
   insert() {
-    this.isDisabledForm = true;
-
-        this.userService.createUser(this.formModel).subscribe((res: any) => {
-
-          this.landaService.alertSuccess('Berhasil', res.message);
-
-          this.afterSave.emit();
-
-          this.isDisabledForm = false;
-
-        }, err => {
-
-          this.landaService.alertError('Mohon Maaf', err.error.errors);
-
-          this.isDisabledForm = false;
-
-        });
+    this.userService.createUser(this.formModel).subscribe((res: any) => {
+      this.landaService.alertSuccess('Berhasil', res.message);
+      this.afterSave.emit();
+    }, err => {
+      this.landaService.alertError('Mohon Maaf', err.error.errors);
+    });
   }
-
 
   update() {
-    this.isDisabledForm = true;
-
-        this.userService.updateUser(this.formModel).subscribe((res: any) => {
-
-          this.landaService.alertSuccess('Berhasil', res.message);
-
-          this.afterSave.emit();
-
-          this.isDisabledForm = false;
-
-        }, err => {
-
-          this.landaService.alertError('Mohon Maaf', err.error.errors);
-
-          this.isDisabledForm = false;
-
-        });
+    this.userService.updateUser(this.formModel).subscribe((res: any) => {
+      this.landaService.alertSuccess('Berhasil', res.message);
+      this.afterSave.emit();
+    }, err => {
+      this.landaService.alertError('Mohon Maaf', err.error.errors);
+    });
   }
+
+  getCroppedImage($event) {
+    this.formModel.photo = $event;
+  }
+
+  ngOnChanges(changes: SimpleChange) {
+    this.resetForm();
+  }
+
 
 }

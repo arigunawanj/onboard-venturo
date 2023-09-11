@@ -9,6 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { DataTablesModule } from 'angular-datatables';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { CoreModule } from 'src/app/core/core.module';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
     FormsModule,
     DataTablesModule,
     SharedModule,
-    NgSelectModule
+    NgSelectModule,
+    CoreModule
   ],
   exports: [
     FormCustomerComponent

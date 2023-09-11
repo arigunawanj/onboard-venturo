@@ -1,15 +1,21 @@
-import { Component, EventEmitter, Input, OnInit, Output, SimpleChange } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { LandaService } from 'src/app/core/services/landa.service';
-import { SaleService } from '../../services/sale.service';
-import { CustomerService } from 'src/app/feature/customer/services/customer.service';
-import * as moment from 'moment';
-
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  SimpleChange,
+} from "@angular/core";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { LandaService } from "src/app/core/services/landa.service";
+import { SaleService } from "../../services/sale.service";
+import { CustomerService } from "src/app/feature/customer/services/customer.service";
+import * as moment from "moment";
 
 @Component({
-  selector: 'app-form-sale',
-  templateUrl: './form-sale.component.html',
-  styleUrls: ['./form-sale.component.scss']
+  selector: "app-form-sale",
+  templateUrl: "./form-sale.component.html",
+  styleUrls: ["./form-sale.component.scss"],
 })
 export class FormSaleComponent implements OnInit {
   readonly dateFormat = 'yyyy-MM-DD hh:mm:ss'
@@ -107,13 +113,27 @@ export class FormSaleComponent implements OnInit {
       return;
     }
 
-    this.saleService.createSale(this.formModel).subscribe((res: any) => {
-      this.landaService.alertSuccess('Berhasil', res.message);
-      this.resetForm();
-      this.afterSave.emit();
-    }, err => {
-      this.landaService.alertError('Mohon Maaf', err.error.errors);
-    });
+    let menuTotal = 0;
+
+    this.menu.map(menu => {
+      menuTotal += (menu.price * menu.total_item)
+    })
+
+    let finalTax = (menuTotal * 111 / 100) - this.voucher.nominal_rupiah;
+    console.log(finalTax);
+    if (finalTax < 0) {
+      this.landaService.alertError('Mohon Maaf', 'Harga Minus. Silahkan cari voucher lain');
+    } else {
+      this.saleService.createSale(this.formModel).subscribe((res: any) => {
+        this.landaService.alertSuccess('Berhasil', res.message);
+        this.resetForm();
+        this.afterSave.emit();
+      }, err => {
+        this.landaService.alertError('Mohon Maaf', err.error.errors);
+      });
+
+    }
+
   }
 
   subtotalFunction(listMenu) {
@@ -143,5 +163,4 @@ export class FormSaleComponent implements OnInit {
     this.subtotal = 0;
     this.ngOnInit();
   }
-
 }

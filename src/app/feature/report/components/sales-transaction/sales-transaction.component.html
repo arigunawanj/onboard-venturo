@@ -1,1 +1,91 @@
-<p>sales-transaction works!</p>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-transparent">
+                <div class="card-header  d-flex justify-content-between">
+                    <h1>Laporan Penjualan</h1>
+                    <div class="d-flex justify-content-end">
+                        <form class="d-flex" id="filter-sales-promo">
+                            <div class="form-group">
+                                <div class="input-group me-2">
+                                    <app-daterangepicker [startDate]="filter.start_date" [endDate]="filter.end_date"
+                                        [showRanges]="true" (onChange)="setFilterPeriod($event)">
+                                    </app-daterangepicker>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group me-2">
+                                    <ng-select style="width: 270px;" [items]="customers" placeholder="Pilih Customer"
+                                        bindLabel="name" bindValue="id" [loading]="showLoading" [searchable]="false"
+                                        name="customer_id" (change)="setFilterCustomer($event)" [multiple]="true">
+                                        <ng-template ng-header-tmp>
+                                            <input class="form-control" value="" type="text" debounceKeyUp
+                                                (onEvent)="getCustomers($any($event.target).value)" />
+                                        </ng-template>
+                                    </ng-select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group me-2">
+                                    <ng-select style="width: 200px;" [items]="products" placeholder="Pilih Products"
+                                        bindLabel="name" bindValue="id" [loading]="showLoading" [searchable]="false"
+                                        name="promo_id" (change)="setFilterPromo($event)" [multiple]="true"
+                                        id="filter-promo" class="mr-2">
+                                        <ng-template ng-header-tmp>
+                                            <input class="form-control" type="text" debounceKeyUp
+                                                (onEvent)="getProducts($any($event.target).value)" />
+                                        </ng-template>
+                                    </ng-select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group me-2">
+                                    <button class="btn btn-danger" (click)="getFilePDF()"><em class="fa fa-file-pdf"></em></button>
+                                    <button class="btn btn-success" (click)="getFileCSV()"><em class="fa fa-file-csv"></em></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table datatable [dtOptions]="dtOptions" class="table table-hover">
+                        <thead class="thead-light">
+                            <tr>
+                                <td rowspan="2" class="text-center">No</td>
+                                <td rowspan="2" class="text-center">No Struk</td>
+                                <td rowspan="2" class="text-center">Customer</td>
+                                <td rowspan="2" class="text-center">Tanggal</td>
+                                <td colspan="2" class="text-center">Promo</td>
+                                <td rowspan="2" class="text-center">Menu</td>
+                                <td rowspan="2" class="text-center">Jumlah</td>
+                                <td rowspan="2" class="text-center">Harga</td>
+                                <td rowspan="2" class="text-center">Total</td>
+                                <td rowspan="2" class="text-center">Total Harga</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">Diskon</td>
+                                <td class="text-center">Voucher</td>
+                            </tr>
+                        </thead>
+                        <tbody *ngFor="let sale of listSaleTransactions">
+                            <tr *ngIf="sale.product_name == sale.product_name">
+                                <td class="vertical-middle">{{sale.no}}</td>
+                                <td class="vertical-middle">{{ sale.invoice }}</td>
+                                <td class="vertical-middle">{{sale.customer_name}}</td>
+                                <td class="vertical-middle">{{sale.date | date:'dd MMMM yyyy'}}</td>
+                                <td class="vertical-middle">
+                                    {{ sale.discount ? sale.discount + '%' : '-' }}
+                                </td>
+                                <td class="vertical-middle">{{ sale.voucher ? (sale.voucher | number) : '-' }}</td>
+                                <td class="vertical-middle">{{sale.product_name}}</td>
+                                <td class="vertical-middle">{{sale.total_item}}</td>
+                                <td class="vertical-middle">{{sale.price | number}}</td>
+                                <td class="vertical-middle">{{ countSubTotal(sale.price, sale.total_item) | number}}</td>
+                                <td class="vertical-middle">{{ countSubTotal(sale.price, sale.total_item) | number}}</td>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

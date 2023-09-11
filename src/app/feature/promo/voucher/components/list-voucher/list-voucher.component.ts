@@ -90,6 +90,12 @@ export class ListVoucherComponent {
     });
   }
 
+  reloadDataTable(): void {
+    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      dtInstance.draw();
+    });
+  }
+
   filterByPeriode(period) {
     this.filter.start_time = period.startDate;
     this.filter.end_time = period.endDate;
@@ -103,12 +109,6 @@ export class ListVoucherComponent {
 
     this.filter.customer_id = customersId.join(',');
     this.reloadDataTable();
-  }
-
-  reloadDataTable(): void {
-    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      dtInstance.draw();
-    });
   }
 
   formCreate() {

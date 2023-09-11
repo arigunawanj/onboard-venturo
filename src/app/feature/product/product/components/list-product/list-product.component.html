@@ -68,21 +68,22 @@
                                 <td class="vertical-middle">{{product.name}}</td>
                                 <td class="vertical-middle">{{product.product_category_name}}</td>
                                 <td class="vertical-middle">
-                                    <label class="badge badge-success" *ngIf="product.is_available == 1">Ada</label>
-                                    <label class="badge badge-danger" *ngIf="product.is_available == 0">Habis</label>
+                                    <label class="badge bg-success" *ngIf="product.is_available == 1">Ada</label>
+                                    <label class="badge bg-danger" *ngIf="product.is_available == 0">Habis</label>
                                 </td>
                                 <td class="vertical-middle">Rp {{product.price | number}}</td>
                                 <td class="vertical-middle text-right">
-                                    <a href="javascript: void(0);" class="align-middle mr-2"
-                                        (click)="formUpdate(product)" placement="left" container="body"
-                                        ngbTooltip="Ubah">
-                                        <em class="fa fa-edit font-size-14"></em>
-                                    </a>
-                                    <a href="javascript: void(0);" class="align-middle"
-                                        (click)="deleteProduct(product.id)" placement="left" container="body"
-                                        ngbTooltip="Hapus">
-                                        <em class="fa fa-trash font-size-14"></em>
-                                    </a>
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn btn-primary" (click)="formUpdate(product)"
+                                          ngbTooltip="Ubah">
+                                          <em class="fa fa-edit font-size-14" placement="left" container="body"></em>
+                                        </button>
+                                        <button type="button" class="btn btn-danger" (click)="deleteProduct(product.id)" placement="left"
+                                          container="body" ngbTooltip="Hapus">
+                                          <em class="fa fa-trash font-size-14"></em>
+                                        </button>
+                                      </div>
+                                    
                                 </td>
                             </tr>
                         </tbody>

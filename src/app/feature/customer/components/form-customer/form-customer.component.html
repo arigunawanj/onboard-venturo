@@ -2,41 +2,58 @@
     <div class="form-group row mt-3">
         <div class="col-md-4"></div>
         <div class="col-md-4">
-     <app-upload-image 
-     [defaultImage]="formModel.photo_url" 
-     [ratioHigh]="4" 
-     [ratioWidth]="3" 
-     (onSubmit)="getCroppedImage($event)">
-     </app-upload-image>
+            <app-upload-image [defaultImage]="formModel.photo_url" [ratioHigh]="4" [ratioWidth]="3"
+                (onSubmit)="getCroppedImage($event)">
+            </app-upload-image>
         </div>
         <div class="col-md-4"></div>
-     </div>
-     <hr>
-  <div class="form-group row">
-      <label class="col-md-4 required">Nama</label>
-      <div class="col-md-8">
-          <input [(ngModel)]="formModel.name" type="text" name="name" class="form-control"
-              placeholder="Nama Pengguna">
-      </div>
-  </div>
-  <div class="form-group row">
-      <label class="col-md-4 required">Email</label>
-      <div class="col-md-8">
-          <input [(ngModel)]="formModel.email" type="email" name="email" class="form-control"
-              placeholder="Email Pengguna">
-      </div>
-  </div>
-  <div class="form-group row">
-    <label class="col-md-4">Phone Number</label>
-    <div class="col-md-8">
-        <input [(ngModel)]="formModel.phone_number" type="text" name="phone_number" class="form-control"
-            placeholder="No Telepon">
     </div>
- </div>
-  <div class="form-group row">
-      <label class="col-md-4"></label>
-      <div class="col-md-8">
-        <button type="button" class="btn btn-primary" (click)="save()" ><em class="fa fa-save"></em> Simpan</button>
-      </div>
-  </div>
+    <hr>
+    <div class="form-group row">
+        <label class="col-md-4 required">Nama</label>
+        <div class="col-md-8">
+            <input [(ngModel)]="formModel.name" type="text" name="name" class="form-control"
+                placeholder="Nama Pengguna">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-4 required">Email</label>
+        <div class="col-md-8">
+            <input [(ngModel)]="formModel.email" type="email" name="email" class="form-control"
+                placeholder="Email Pengguna">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-4">Phone Number</label>
+        <div class="col-md-8">
+            <input [(ngModel)]="formModel.phone_number" type="text" name="phone_number" class="form-control"
+                placeholder="No Telepon">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-4">Birth Date</label>
+        <div class="col-md-8">
+            <input [(ngModel)]="formModel.date_of_birth" type="date" name="date_of_birth" class="form-control">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-4">Status</label>
+        <div class="col-md-8">
+            <div class="btn-group btn-group-toggle" aria-label="Radio Buttons verified">
+                <input type="radio" [value]="0" [(ngModel)]="formModel.is_verified" class="btn-check" name="is_verified"
+                    id="not_verified" autocomplete="on">
+                <label class="btn btn-primary" for="not_verified">Belum Verifikasi</label>
+                <input type="radio" [value]="1" [(ngModel)]="formModel.is_verified" class="btn-check" name="is_verified"
+                    id="verified" autocomplete="on">
+                <label class="btn btn-primary" for="verified">Verifikasi</label>
+            </div>
+        </div>
+    </div>
+
+    <div class=" form-group row">
+        <label class="col-md-4"></label>
+        <div class="col-md-8">
+            <button type="submit" class="btn btn-primary" (click)="save()">Simpan</button>
+        </div>
+    </div>
 </form>

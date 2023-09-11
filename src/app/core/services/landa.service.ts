@@ -1,119 +1,146 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import Swal from 'sweetalert2';
+import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import Swal from "sweetalert2";
 
-import { environment } from '../../../environments/environment';
+import { environment } from "../../../environments/environment";
 
 @Injectable({
-    providedIn: 'root',
+  providedIn: "root",
 })
-
 export class LandaService {
-    apiURL = environment.apiURL;
-    userToken: any;
-    httpOptions: any;
+  apiURL = environment.apiURL;
+  userToken: any;
+  httpOptions: any;
 
-    constructor(private http: HttpClient) {
+  constructor(private http: HttpClient) {}
 
+  ngOnInit(): void {}
+
+  removeNull(params = {}) {
+    let filledParams = {};
+    for (const key in params) {
+      if (params[key]) {
+        filledParams[key] = params[key];
+      }
     }
 
-    ngOnInit(): void { }
+    return filledParams;
+  }
 
-    /**
-     * Request GET
-     */
-    DataGet(path, payloads = {}) {
-        let clearParams = {};
-        for (const key in payloads) {
-            if (payloads[key]) clearParams[key] = payloads[key];
-        }
+  DownloadLink(path: string, params = {}) {
+    let queryParams = new URLSearchParams(this.removeNull(params)).toString();
+    window.open(this.apiURL + path + "?" + queryParams);
+  }
 
-        return this.http.get(this.apiURL + path, {
-            params: clearParams,
-        });
+  /**
+   * Request GET
+   */
+  DataGet(path, payloads = {}) {
+    let clearParams = {};
+    for (const key in payloads) {
+      if (payloads[key]) clearParams[key] = payloads[key];
     }
 
-    /**
-     * Request POST
-     */
-    DataPost(path, payloads = {}) {
-        const reqHeader = this.httpOptions;
-        return this.http.post(this.apiURL + path, payloads, reqHeader);
-    }
+    return this.http.get(this.apiURL + path, {
+      params: clearParams,
+    });
+  }
 
-    /**
-     * Request PUT
-     */
-    DataPut(path, payloads = {}) {
-        const reqHeader = this.httpOptions;
-        return this.http.put(this.apiURL + path, payloads, reqHeader);
-    }
+  /**
+   * Request POST
+   */
+  DataPost(path, payloads = {}) {
+    const reqHeader = this.httpOptions;
+    return this.http.post(this.apiURL + path, payloads, reqHeader);
+  }
 
-    /**
-    * Request DELETE
-    */
-    DataDelete(path, payloads = {}) {
-        return this.http.delete(this.apiURL + path, {
-            params: payloads,
-        });
-    }
+  /**
+   * Request PUT
+   */
+  DataPut(path, payloads = {}) {
+    const reqHeader = this.httpOptions;
+    return this.http.put(this.apiURL + path, payloads, reqHeader);
+  }
 
-    /**
-     * Sweet alert Sukses
-     */
-    alertSuccess(title, content, timer = 3.5) {
-        Swal.fire({
-            title,
-            text: content,
-            icon: 'success',
-            timer: timer * 1000,
-            showConfirmButton: true,
-        });
-    }
+  /**
+   * Request DELETE
+   */
+  DataDelete(path, payloads = {}) {
+    return this.http.delete(this.apiURL + path, {
+      params: payloads,
+    });
+  }
 
-    /**
-     * Sweet alert warning
-     */
-    alertWarning(title, content, timer = 3.5) {
-        Swal.fire({
-            title,
-            text: content,
-            icon: 'warning',
-            timer: timer * 1000,
-            showConfirmButton: true,
-        });
-    }
+  // DataDownload(path) {
+  //   return this.http.get(this.apiURL + path, { responseType: "blob" });
+  // }
 
-    /**
-     * Sweet alert info
-     */
-    alertInfo(title, content, timer = 3.5) {
-        Swal.fire({
-            title,
-            text: content,
-            icon: 'info',
-            timer: timer * 1000,
-            showConfirmButton: true,
-        });
+  DataDownload(path, payloads = {}) {
+    let clearParams = {};
+    for (const key in payloads) {
+      if (payloads[key]) clearParams[key] = payloads[key];
     }
+    return this.http.get(this.apiURL + path, {
+      responseType: "blob",
+      params: clearParams,
+    });
+  }
 
-    /**
-     * Sweet alert error
-     */
-    alertError(title, content) {
-        let isi = '';
-        if (Array.isArray(content) === true) {
-            content.forEach(function (element) {
-                isi += `${element} <br>`;
-            });
-        } else if (typeof content === 'object') {
-            for (const key in content) {
-                isi += `${content[key]} <br>`;
-            }
-        } else {
-            isi = String(content);
-        }
-        Swal.fire(title, isi, 'error');
+  /**
+   * Sweet alert Sukses
+   */
+  alertSuccess(title, content, timer = 3.5) {
+    Swal.fire({
+      title,
+      text: content,
+      icon: "success",
+      timer: timer * 1000,
+      showConfirmButton: true,
+    });
+  }
+
+  /**
+   * Sweet alert warning
+   */
+  alertWarning(title, content, timer = 3.5) {
+    Swal.fire({
+      title,
+      text: content,
+      icon: "warning",
+      timer: timer * 1000,
+      showConfirmButton: true,
+    });
+  }
+
+  /**
+   * Sweet alert info
+   */
+  alertInfo(title, content, timer = 3.5) {
+    Swal.fire({
+      title,
+      text: content,
+      icon: "info",
+      timer: timer * 1000,
+      showConfirmButton: true,
+    });
+  }
+
+  /**
+   * Sweet alert error
+   */
+  alertError(title, content) {
+    let isi = "";
+    if (Array.isArray(content) === true) {
+      content.forEach(function (element) {
+        isi += `${element} <br>`;
+      });
+    } else if (typeof content === "object") {
+      for (const key in content) {
+        isi += `${content[key]} <br>`;
+      }
+    } else {
+      isi = String(content);
     }
-
+    Swal.fire(title, isi, "error");
+  }
 }
