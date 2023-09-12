@@ -15,17 +15,16 @@ class ProductCategoryModel extends Model implements CrudInterface
     use Uuid;
 
     public $timestamps = true;
-    protected $fillable = [
-        'name', 'index'
-
-    ];
+    protected $guarded = [];
+    protected $keyType = 'string';
+    protected $primaryKey = 'id';
 
     protected $casts = [
         'id' => 'string',
     ];
 
     public $incrementing = false;
-    
+
     protected $table = 'm_product_category';
 
     public function drop(string $id)

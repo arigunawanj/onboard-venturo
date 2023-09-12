@@ -5,16 +5,20 @@ namespace App\Models;
 use App\Models\Promo;
 use App\Models\Customer;
 use App\Http\Traits\Uuid;
+use App\Repository\CrudInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class VoucherModel extends Model
+class VoucherModel extends Model implements CrudInterface
 {
     use HasFactory;
     use SoftDeletes; // Use SoftDeletes library
     use Uuid;
 
+    public $incrementing = false;
+    protected $keyType = 'string';
+    protected $primaryKey = 'id';
     public $timestamps = true;
     protected $fillable = [
         'name',

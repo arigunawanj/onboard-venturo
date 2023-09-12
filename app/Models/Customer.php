@@ -16,7 +16,7 @@ class Customer extends Model implements CrudInterface
 
     protected $table = 'm_customer';
 
-    protected $guarded = ['id'];
+    protected $guarded = [];
 
     public $timestamps = true;
 

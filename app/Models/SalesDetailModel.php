@@ -18,6 +18,10 @@ class SalesDetailModel extends Model implements CrudInterface
     use HasFactory;
     use SoftDeletes;
 
+    public $incrementing = false;
+    protected $keyType = 'string';
+    protected $primaryKey = 'id';
+
     public $timestamps=true;
     protected $fillable = [
         't_sales_id',
@@ -43,29 +47,29 @@ class SalesDetailModel extends Model implements CrudInterface
 
     public function getTotalSaleByPeriode(string $startDate, string $endDate) :int
     {
-       $total = $this->query()
-           ->select(DB::raw('sum((total_item * price) - discount_nominal) as total_sales'))
-           ->whereHas('sales', function ($query) use ($startDate, $endDate) {
-                       $query->whereRaw('date >= "' . $startDate . ' 00:00:01"
-                                         and date <= "' . $endDate . ' 23:59:59"');
-                   })
-           ->first()
-           ->toArray();
+        $total = $this->query()
+            ->select(DB::raw('sum((total_item * price) - discount_nominal) as total_sales'))
+            ->whereHas('sales', function ($query) use ($startDate, $endDate) {
+                        $query->whereRaw('date >= "' . $startDate . ' 00:00:01"
+                                            and date <= "' . $endDate . ' 23:59:59"');
+                    })
+            ->first()
+            ->toArray();
 
-       return $total['total_sales'] ?? 0;
+        return $total['total_sales'] ?? 0;
     }
 
     public function getListYear()
     {
-       $sales   = new SalesModel();
-       $years   = $sales->query()
-                   ->select(DB::raw('Distinct(year(date)) as year'))
-                   ->get()
-                   ->toArray();
+        $sales   = new SalesModel();
+        $years   = $sales->query()
+                    ->select(DB::raw('Distinct(year(date)) as year'))
+                    ->get()
+                    ->toArray();
 
-       return array_map(function ($year) {
-           return $year['year'];
-       }, $years);
+        return array_map(function ($year) {
+            return $year['year'];
+        }, $years);
     }
 
     public function getTotalPerYears(string $year): int{
@@ -107,17 +111,67 @@ class SalesDetailModel extends Model implements CrudInterface
 
     public function getAll(array $filter, int $itemPerPage = 0, string $sort = '')
     {
-        $user = $this->query();
+        $saleDetail = $this->query();
 
         if (!empty($filter['m_product_id']) && is_array($filter['m_product_id'])) {
-            $user->whereIn('m_product_id', $filter['m_product_id']);
+            $saleDetail->whereIn('m_product_id', $filter['m_product_id']);
         }
+        if (!empty($filter['m_customer_id']) && is_array($filter['m_customer_id'])) {
+            $customerId = $filter['m_customer_id'];
 
+            $saleDetail->where(function ($query) use ($customerId) {
+                $query->whereIn('t_sales_id',function ($query) use ($customerId) {
+                    $query->select('t_sales.id')->from('t_sales')->whereIn('t_sales.m_customer_id',$customerId);
+                });
+            });
+        }
+        if (!empty($filter['start_date']) && !empty($filter['end_date'])) {
+            $startDate = $filter['start_date'];
+            $endDate = $filter['end_date'];
+            $saleDetail->where(function ($query) use ($startDate, $endDate) {
+                $query->whereIn('t_sales_id',function ($query) use ($startDate, $endDate) {
+                    $query->select('t_sales.id')->from('t_sales')
+                    ->whereRaw('t_sales.date >= "' . $startDate . ' 00:00:01" and date <= "' . $endDate . ' 23:59:59"');
+                });
+            });
+        }
         $sort = $sort ?: 'id DESC';
-        $user->orderByRaw($sort);
+        $saleDetail->orderByRaw($sort);
         $itemPerPage = ($itemPerPage > 0) ? $itemPerPage : false;
 
-        return $user->paginate($itemPerPage)->appends('sort', $sort);
+        return $saleDetail->paginate($itemPerPage)->appends('sort', $sort);
+    }
+
+     public function getAllExport(array $filter)
+    {
+        $saleDetail = $this->query();
+
+        if (!empty($filter['m_product_id']) && is_array($filter['m_product_id'])) {
+            $saleDetail->whereIn('m_product_id', $filter['m_product_id']);
+        }
+        if (!empty($filter['m_customer_id']) && is_array($filter['m_customer_id'])) {
+            $customerId = $filter['m_customer_id'];
+
+            $saleDetail->where(function ($query) use ($customerId) {
+                $query->whereIn('t_sales_id',function ($query) use ($customerId) {
+                    $query->select('t_sales.id')->from('t_sales')->whereIn('t_sales.m_customer_id',$customerId);
+                });
+            });
+        }
+        if (!empty($filter['start_date']) && !empty($filter['end_date'])) {
+            $startDate = $filter['start_date'];
+            $endDate = $filter['end_date'];
+            $saleDetail->where(function ($query) use ($startDate, $endDate) {
+                $query->whereIn('t_sales_id',function ($query) use ($startDate, $endDate) {
+                    $query->select('t_sales.id')->from('t_sales')
+                    ->whereRaw('t_sales.date >= "' . $startDate . ' 00:00:01" and date <= "' . $endDate . ' 23:59:59"');
+                });
+            });
+        }
+        $saleDetail->orderByRaw('id DESC');
+
+
+        return $saleDetail->get();
     }
 
     public function getById(string $id)

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\SaleController;
 use App\Http\Controllers\Web\AppController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Web\TestsController;
@@ -15,5 +16,6 @@ use App\Http\Controllers\Web\TestsController;
 |
 */
 Route::get('/log', [AppController::class, 'log'])->name('log');
+Route::get('/test', [SaleController::class, 'testingSales']);
 
 Route::get('/{any}', [AppController::class, 'index'])->where('any', '^(?!print|excel|pdf|assets|storage).*$');

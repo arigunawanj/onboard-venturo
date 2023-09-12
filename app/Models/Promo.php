@@ -3,23 +3,33 @@
 namespace App\Models;
 
 use App\Http\Traits\Uuid;
+use App\Repository\CrudInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Promo extends Model
+class Promo extends Model implements CrudInterface
 {
-    use HasFactory, SoftDeletes, Uuid;
-
-    protected $table = 'm_promo';
-    protected $guarded = [];
+    use HasFactory;
+    use Uuid;
+    use SoftDeletes; // Use SoftDeletes library
 
     public $timestamps = true;
-    public $incrementing = false;
 
+    protected $fillable = [
+        'name',
+        'status',
+        'expired_in_day',
+        'nominal_percentage',
+        'nominal_rupiah',
+        'term_conditions',
+        'photo'
+    ];
     protected $casts = [
         'id' => 'string',
     ];
+
+    protected $table = 'm_promo';
 
     public function drop(string $id)
     {
@@ -37,6 +47,10 @@ class Promo extends Model
 
         if (!empty($filter['name'])) {
             $user->where('name', 'LIKE', '%' . $filter['name'] . '%');
+        }
+
+        if (!empty($filter['status'])) {
+            $user->where('status', '=', $filter['status']);
         }
 
         $sort = $sort ?: 'id DESC';

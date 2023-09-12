@@ -87,6 +87,7 @@ class ProductHelper extends Venturo
         }
     }
 
+
     public function getAll(array $filter, int $itemPerPage = 0, string $sort = '')
     {
         $categories = $this->product->getAll($filter, $itemPerPage, $sort);
@@ -153,6 +154,7 @@ class ProductHelper extends Venturo
             $this->productDetail->drop($val['id']);
         }
     }
+
 
 
 

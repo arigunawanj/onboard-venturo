@@ -5,13 +5,16 @@ namespace App\Models;
 use App\Http\Traits\Uuid;
 use App\Models\ProductDetailModel;
 use App\Models\ProductCategoryModel;
+use App\Repository\CrudInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class ProductModel extends Model
+class ProductModel extends Model implements CrudInterface
 {
-    use HasFactory, SoftDeletes, Uuid;
+    use HasFactory;
+    use SoftDeletes;
+    use Uuid;
 
     public $incrementing = false;
     protected $keyType = 'string';
@@ -26,7 +29,6 @@ class ProductModel extends Model
         'is_available'
     ];
     protected $table = 'm_product';
-    
     protected $casts = [
         'id' => 'string',
     ];
@@ -67,6 +69,10 @@ class ProductModel extends Model
 
         if (!empty($filter['name'])) {
             $user->where('name', 'LIKE', '%' . $filter['name'] . '%');
+        }
+
+        if (!empty($filter['id'])) {
+            $user->whereIn('id', $filter['id']);
         }
 
         if (!empty($filter['m_product_category_id'])) {

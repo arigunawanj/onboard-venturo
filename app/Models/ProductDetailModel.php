@@ -10,8 +10,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ProductDetailModel extends Model implements CrudInterface
 {
-    use HasFactory, SoftDeletes, Uuid;
-
+    use HasFactory;
+    use SoftDeletes;
+    use Uuid;
     public $timestamps = true;
     protected $fillable = [
         'type',
@@ -20,7 +21,6 @@ class ProductDetailModel extends Model implements CrudInterface
         'price'
     ];
     protected $table = 'm_product_detail';
-    public $incrementing = false;
     protected $attributes = [
         'price' => 0,
     ];
@@ -33,7 +33,7 @@ class ProductDetailModel extends Model implements CrudInterface
         return $this->find($id)->delete();
     }
 
-    public function dropByProductId(int $productId)
+    public function dropByProductId(string $productId)
     {
         return $this->where('m_product_id', $productId)->delete();
     }

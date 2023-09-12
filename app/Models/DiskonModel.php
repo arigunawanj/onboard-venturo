@@ -12,15 +12,21 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class DiskonModel extends Model implements CrudInterface
 {
-    use HasFactory, SoftDeletes, Uuid;
+    use HasFactory;
+    use SoftDeletes; // Use SoftDeletes library
+    use Uuid;
 
+    public $timestamps = true;
+    protected $fillable = [
+        'm_customer_id',
+        'm_promo_id',
+        'status',
+    ];
     protected $table = 'm_discount';
 
-    protected $guarded = [];
-    public $timestamps = true;
-
     public $incrementing = false;
-
+    protected $keyType = 'string';
+    protected $primaryKey = 'id';
     protected $casts = [
         'id' => 'string',
     ];
@@ -45,6 +51,11 @@ class DiskonModel extends Model implements CrudInterface
         return $this->find($id)->update($payload);
     }
 
+    public function store(array $payload)
+    {
+        return $this->create($payload);
+    }
+
     public function getAll(array $filter, int $itemPerPage = 0, string $sort = '')
     {
         $user = $this->query();
@@ -52,7 +63,6 @@ class DiskonModel extends Model implements CrudInterface
         if (!empty($filter['m_customer_id']) && is_array($filter['m_customer_id'])) {
             $user->whereIn('m_customer_id', $filter['m_customer_id']);
         }
-
 
         $sort = $sort ?: 'id DESC';
         $user->orderByRaw($sort);
@@ -64,11 +74,6 @@ class DiskonModel extends Model implements CrudInterface
     public function getById(string $id)
     {
         return $this->find($id);
-    }
-
-    public function store(array $payload)
-    {
-        return $this->create($payload);
     }
 
 }

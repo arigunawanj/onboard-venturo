@@ -31,8 +31,8 @@ class SalesCategoryHelper extends Venturo
         $sales = $this->sales->getSalesByCategory($startDate, $endDate, $categoryId);
 
         return [
-            'status'         => true,
-            'data'           => $this->reformatReport($sales, $startDate, $endDate),
+            'status'     => true,
+            'data'       => $this->reformatReport($sales, $startDate, $endDate),
             'dates'          => array_values($this->dates),
             'total_per_date' => array_values($this->totalPerDate),
             'grand_total'    => $this->total
@@ -100,6 +100,16 @@ class SalesCategoryHelper extends Venturo
         return $dates ?? [];
     }
 
+    private function setDefaultTotal(string $date)
+    {
+        $this->totalPerDate[$date] = 0;
+    }
+
+    private function setSelectedDate(string $date)
+    {
+        $this->dates[] = $date;
+    }
+
     private function reformatReport($list)
     {
         $list        = $list->toArray();
@@ -107,7 +117,8 @@ class SalesCategoryHelper extends Venturo
         $salesDetail = [];
 
         foreach ($list as $sales) {
-            foreach ($sales['detail'] as $detail) {
+            foreach ($sales['details'] as $detail) {
+                // Skip if relation to product is not found
                 if (empty($detail['product'])) {
                     continue;
                 }
@@ -149,17 +160,4 @@ class SalesCategoryHelper extends Venturo
 
         return $this->convertNumericKey($salesDetail);
     }
-
-    private function setDefaultTotal(string $date)
-    {
-        $this->totalPerDate[$date] = 0;
-    }
-
-    private function setSelectedDate(string $date)
-    {
-        $this->dates[] = $date;
-    }
-
-    
-
 }

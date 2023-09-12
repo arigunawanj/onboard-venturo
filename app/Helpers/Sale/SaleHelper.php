@@ -14,9 +14,9 @@ class SaleHelper extends Venturo{
         $this->salesDetail = new SalesDetailModel();
     }
 
-    public function getSaleTransaction(array $filter, int $itemPerPage = 0, string $sort = '')
+    public function getAll($startDate, $endDate, $customerId = [], $promoId = [])
     {
-        $sales = $this->salesDetail->getAll($filter, $itemPerPage, $sort);
+        $sales = $this->sales->getAll($startDate, $endDate, $customerId, $promoId);
 
         return [
             'status' => true,
@@ -24,9 +24,19 @@ class SaleHelper extends Venturo{
         ];
     }
 
-    public function getAll($startDate, $endDate, $customerId = [], $promoId = [])
+    public function getSaleTransaction(array $filter, int $itemPerPage = 0, string $sort = '')
     {
-        $sales = $this->sales->getAll($startDate, $endDate, $customerId, $promoId);
+        $sales = $this->sales->getSaleTransaction($filter, $itemPerPage, $sort);
+
+        return [
+            'status' => true,
+            'data' => $sales
+        ];
+    }
+
+    public function getSaleTransactionForExport(array $filter)
+    {
+        $sales = $this->salesDetail->getAllExport($filter);
 
         return [
             'status' => true,
@@ -56,6 +66,12 @@ class SaleHelper extends Venturo{
             $this->beginTransaction();
 
             $sales = $this->sales->store($payload);
+
+            $createdAt = $sales->created_at;
+            $month = $createdAt->format('m');
+            $year = $createdAt->format('Y');
+            $sales->invoice = strtoupper(substr($sales->id, 0, 3)). '/KWT/' . $month . '/' . $year;
+            $sales->save();
 
             $this->insertUpdateDetail($payload['details'] ?? [], $sales->id);
 

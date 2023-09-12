@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Exports\ReportSalesCategory;
+use App\Helpers\Report\SalesCategoryHelper;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Helpers\Report\SalesPromoHelper;
@@ -16,6 +17,7 @@ class ReportSalesController extends Controller
     public function __construct()
     {
         $this->salesPromo = new SalesPromoHelper();
+        $this->salesCategory = new SalesCategoryHelper();
     }
 
     public function viewSalesPromo(Request $request)

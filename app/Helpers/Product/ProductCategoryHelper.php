@@ -46,7 +46,7 @@ class ProductCategoryHelper extends Venturo
        }
    }
 
-   public function delete(int $id): bool
+   public function delete(string $id): bool
    {
        try {
            //penyesuaian index ketika kategori dihapus
@@ -72,7 +72,7 @@ class ProductCategoryHelper extends Venturo
        ];
    }
 
-   public function getById(int $id): array
+   public function getById(string $id): array
    {
        $category = $this->categoryModel->getById($id);
        if (empty($category)) {
@@ -88,7 +88,7 @@ class ProductCategoryHelper extends Venturo
        ];
    }
 
-   public function update(array $payload, int $id): array
+   public function update(array $payload, string $id): array
    {
        try {
            $this->categoryModel->edit($payload, $id);

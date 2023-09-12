@@ -23,6 +23,7 @@ class CreateTSales extends Migration
                 ->comment('Fill with id of m_discount_id');
             $table->double('voucher_nominal')->nullable()
                 ->comment('Fill with nominal of voucher');
+            $table->string('invoice')->nullable();
             $table->date('date');
             $table->timestamps();
             $table->softDeletes();
