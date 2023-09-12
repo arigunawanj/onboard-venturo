@@ -2,35 +2,37 @@
     <div class="row">
         <div class="col-md-12">
             <div class="card card-transparent">
-                <div class="card-header  d-flex justify-content-between">
-                    <h1>Rekap Penjualan Per Menu</h1>
-                    <div class="d-flex justify-content-end">
-                        <form class="form-inline" id="filter-sales-promo">
-                            <div class="form-group">
-                                <div class="input-group mr-2">
-                                    <app-daterangepicker [startDate]="filter.start_date" [endDate]="filter.end_date"
-                                        [showRanges]="true" (onChange)="setFilterPeriod($event)">
-                                    </app-daterangepicker>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <ng-select [items]="categories" (change)="setFilterCategory($event)" class="mr-2"
-                                    placeholder="Pilih Category" bindLabel="name" bindValue="id" [loading]="showLoading"
-                                    [searchable]="false" name="customer_id">
-                                    <ng-template ng-header-tmp>
-                                        <input class="form-control" type="text" debounceKeyUp
-                                            (onEvent)="getCategories($any($event.target).value)" />
-                                    </ng-template>
-                                </ng-select>
-                            </div>
-                        </form>
-                        <button type="button" class="btn btn-sm btn-primary mr-2" (click)="reloadSales()">
+                <div class="card-header d-flex justify-content-between">
+                    <div class="form-group d-flex">
+                        <div class="d-flex align-items-center me-2">
+                            <label for="" class="">Periode : </label>
+                        </div>
+                        <div>
+                            <app-daterangepicker [startDate]="filter.start_date" [endDate]="filter.end_date"
+                                [showRanges]="true" (onChange)="setFilterPeriod($event)">
+                            </app-daterangepicker>
+
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-end">
+                        <button type="button" class="btn btn-sm btn-primary me-2" (click)="reloadSales()">
                             Tampilkan
                         </button>
-                        <button type="button" class="btn btn-sm btn-primary" (click)="downloadExcel()">
+                        <button type="button" class="btn btn-sm btn-secondary" (click)="downloadExcel()">
                             Excel
                         </button>
                     </div>
+                    <div class="d-flex align-items-center">
+                        <ng-select [items]="categories" (change)="setFilterCategory($event)" class="mr-2"
+                            placeholder="Pilih Category" bindLabel="name" bindValue="id" [loading]="showLoading"
+                            [searchable]="false" name="customer_id">
+                            <ng-template ng-header-tmp>
+                                <input class="form-control" type="text" debounceKeyUp
+                                    (onEvent)="getCategories($any($event.target).value)" />
+                            </ng-template>
+                        </ng-select>
+                    </div>
+
                 </div>
                 <div class="card-body">
                     <div class="table table-responsive">

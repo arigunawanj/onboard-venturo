@@ -1,22 +1,22 @@
-import { Component, ViewChild } from '@angular/core';
-import { DataTableDirective } from 'angular-datatables';
-import { SalesService } from '../../services/sales.service';
-import { CustomerService } from 'src/app/feature/customer/services/customer.service';
-import { ProductService } from 'src/app/feature/product/product/services/product.service';
-import * as FileSaver from 'file-saver';
+import { Component, ViewChild } from "@angular/core";
+import { DataTableDirective } from "angular-datatables";
+import { SalesService } from "../../services/sales.service";
+import { CustomerService } from "src/app/feature/customer/services/customer.service";
+import { ProductService } from "src/app/feature/product/product/services/product.service";
+import * as FileSaver from "file-saver";
 
 @Component({
-  selector: 'app-sales-transaction',
-  templateUrl: './sales-transaction.component.html',
-  styleUrls: ['./sales-transaction.component.scss']
+  selector: "app-sales-transaction",
+  templateUrl: "./sales-transaction.component.html",
+  styleUrls: ["./sales-transaction.component.scss"],
 })
 export class SalesTransactionComponent {
   filter: {
-    start_date: string,
-    end_date: string,
-    customer_id: any,
-    product_id: any
-  }
+    start_date: string;
+    end_date: string;
+    customer_id: any;
+    product_id: any;
+  };
   showLoading: boolean;
   @ViewChild(DataTableDirective)
   dtElement: DataTableDirective;
@@ -31,12 +31,21 @@ export class SalesTransactionComponent {
   pageSize: number;
   collectionSize: number;
 
+  // countRowspan(saleId) {
+  //   let rowspan = 0;
+  //   this.listSaleTransactions.forEach(element => {
+  //     if (saleId == element.sales_id) {
+  //       rowspan++;
+  //     }
+  //   });
+  //   return rowspan;
+  // }
 
   constructor(
     private salesService: SalesService,
     private customerService: CustomerService,
     private productService: ProductService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.resetFilter();
@@ -50,54 +59,60 @@ export class SalesTransactionComponent {
       start_date: null,
       end_date: null,
       customer_id: [],
-      product_id: []
-    }
+      product_id: [],
+    };
   }
 
-  getCustomers(name = '') {
+  getCustomers(name = "") {
     this.showLoading = true;
-    this.customerService.getCustomers({ name: name }).subscribe((res: any) => {
-      this.customers = res.data.list;
-      this.showLoading = false;
-    }, err => {
-      console.log(err);
-    });
-  }
-
-  getProducts(name = '') {
-    this.showLoading = true;
-    this.productService.getProducts({ name: name }).subscribe((res: any) => {
-      this.products = res.data.list;
-      this.showLoading = false;
-    }, err => {
-      console.log(err);
-    });
-  }
-
- getFileCSV() {
-    this.salesService.getReportCSV(this.filter).subscribe(
-      (data) => {
-        // Handle the CSV data here
-        // Save the CSV file using FileSaver.js
-        const blob = new Blob([data], { type: 'text/csv' });
-        FileSaver.saveAs(blob, 'Repost Sales.csv');
+    this.customerService.getCustomers({ name: name }).subscribe(
+      (res: any) => {
+        this.customers = res.data.list;
+        this.showLoading = false;
       },
-      (error) => {
-        console.error('Error:', error);
+      (err) => {
+        console.log(err);
       }
     );
   }
 
- getFilePDF() {
+  getProducts(name = "") {
+    this.showLoading = true;
+    this.productService.getProducts({ name: name }).subscribe(
+      (res: any) => {
+        this.products = res.data.list;
+        this.showLoading = false;
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
+
+  getFileCSV() {
+    this.salesService.getReportCSV(this.filter).subscribe(
+      (data) => {
+        // Handle the CSV data here
+        // Save the CSV file using FileSaver.js
+        const blob = new Blob([data], { type: "text/csv" });
+        FileSaver.saveAs(blob, "Repost Sales.csv");
+      },
+      (error) => {
+        console.error("Error:", error);
+      }
+    );
+  }
+
+  getFilePDF() {
     this.salesService.getReportPDF(this.filter).subscribe(
       (data) => {
         // Handle the PDF data here
         // Save the PDF file using FileSaver.js
-        const blob = new Blob([data], { type: 'text/pdf' });
-        FileSaver.saveAs(blob, 'Report Sales.pdf');
+        const blob = new Blob([data], { type: "text/pdf" });
+        FileSaver.saveAs(blob, "Report Sales.pdf");
       },
       (error) => {
-        console.error('Error:', error);
+        console.error("Error:", error);
       }
     );
   }
@@ -122,6 +137,9 @@ export class SalesTransactionComponent {
             let number = dtParams.start + 1;
             list.forEach((val) => {
               val.no = number++;
+              val.total_bayar = val.details
+                .map((element) => element.price * element.total_item)
+                .reduce((total, num) => total + num, 0);
             });
             this.listSaleTransactions = list;
 
@@ -131,7 +149,7 @@ export class SalesTransactionComponent {
               data: [],
             });
           },
-          (err: any) => { }
+          (err: any) => {}
         );
       },
     };
@@ -165,10 +183,10 @@ export class SalesTransactionComponent {
 
   generateSafeParam(list) {
     let paramId = [];
-    list.forEach(val => (paramId.push(val.id)));
-    if (!paramId) return '';
+    list.forEach((val) => paramId.push(val.id));
+    if (!paramId) return "";
     console.log(paramId);
 
-    return paramId.join(',')
+    return paramId.join(",");
   }
 }
