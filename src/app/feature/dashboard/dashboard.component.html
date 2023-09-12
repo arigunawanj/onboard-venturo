@@ -1,1 +1,86 @@
-<p>dashboard works!</p>
+<div class="container-fluid">
+    <div class="row">
+    <div class="col-md-5">
+        <div class="row">
+            <div class="col-6">
+                <div class="card card-summaries">
+                    <div class="card-body text-center">
+                        <div class="icon-container">
+                            <span class="icon">
+                                <em class="fa fa-chart-bar"></em>
+                            </span>
+                        </div>
+                        <div class="title-summary">
+                            <h3>Hasil Kemarin</h3>
+                            <h2>Rp {{total.yesterday | number}}</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="card card-summaries">
+                    <div class="card-body text-center">
+                        <div class="icon-container">
+                            <span class="icon">
+                                <em class="fa fa-chart-bar"></em>
+                            </span>
+                        </div>
+                        <div class="title-summary">
+                            <h3>Hasil Hari Ini</h3>
+                            <h2>Rp {{total.today | number}}</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="card card-summaries">
+                    <div class="card-body text-center">
+                        <div class="icon-container">
+                            <span class="icon">
+                                <em class="fa fa-chart-bar"></em>
+                            </span>
+                        </div>
+                        <div class="title-summary">
+                            <h3>Hasil Bulan Lalu</h3>
+                            <h2>Rp {{total.last_month | number}}</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="card card-summaries">
+                    <div class="card-body text-center">
+                        <div class="icon-container">
+                            <span class="icon">
+                                <em class="fa fa-chart-bar"></em>
+                            </span>
+                        </div>
+                        <div class="title-summary">
+                            <h3>Hasil Bulan Ini</h3>
+                            <h2>Rp {{total.this_month | number}}</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        <div class="col-md-7">
+            <div class="card card-dashboard">
+                <div class="card-header  d-flex justify-content-between">
+                    Grafik Penjualan
+                </div>
+                <div class="card-body">
+                    <div id="chart">
+                            <canvas baseChart
+                            [datasets]="barChartData"
+                            [labels]="barChartLabels"
+                            [options]="barChartOptions"
+                            [legend]="true"
+                            [chartType]="'bar'">
+                    </canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
