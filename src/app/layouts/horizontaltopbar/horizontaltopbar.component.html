@@ -50,7 +50,7 @@
                     <a href="javascript: void(0);" [routerLink]="['/promo']" class="col dropdown-item side-nav-link-ref">Promo</a>
                     <a href="javascript: void(0);" [routerLink]="['/voucher']" class="col dropdown-item side-nav-link-ref">Voucher</a>
                     <a href="javascript: void(0);" [routerLink]="['/diskon']" class="col dropdown-item side-nav-link-ref">Diskon</a>
-                    <a href="javascript: void(0);" [routerLink]="['/sale']" class="col dropdown-item side-nav-link-ref">Sale</a>
+                    
                 </div>
             </li>
             <li class="nav-item dropdown" ngbDropdown>
@@ -60,7 +60,7 @@
                     <div class="arrow-down"></div>
                 </a>
                 <div class="dropdown-menu row" ngbDropdownMenu>
-                    <a class="col dropdown-item side-nav-link-ref">Penjualan Menu</a>
+                    <a href="javascript: void(0);" [routerLink]="['/sale']" class="col dropdown-item side-nav-link-ref">Penjualan Menu</a>
                 </div>
             </li>
             <li class="nav-item dropdown" ngbDropdown>
@@ -73,6 +73,7 @@
                     <a class="col dropdown-item side-nav-link-ref" [routerLink]="['/report/penjualan']">Penjualan</a>
                     <a class="col dropdown-item side-nav-link-ref" [routerLink]="['/report/sales-promo']">Pemakaian Promo</a>
                     <a class="col dropdown-item side-nav-link-ref" [routerLink]="['/report/sales-menu']">Rekap Penjualan Menu</a>
+                    <a class="col dropdown-item side-nav-link-ref" [routerLink]="['/report/sales-customer']">Rekap Penjualan Per Customer</a>
 
                 </div>
             </li>

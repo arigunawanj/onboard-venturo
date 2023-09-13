@@ -14,6 +14,8 @@ import { PromoModule } from './promo/promo.module';
 import { SaleModule } from './sale/sale.module';
 import { ReportModule } from './report/report.module';
 import { ChartsModule } from 'ng2-charts';
+import { CoreModule } from '../core/core.module';
+import { SharedModule } from '../shared/shared.module';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     suppressScrollX: true,
@@ -35,7 +37,9 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         PromoModule,
         SaleModule,
         ReportModule,
-        ChartsModule
+        ChartsModule,
+        CoreModule,
+        SharedModule
         
     ],
     providers: [

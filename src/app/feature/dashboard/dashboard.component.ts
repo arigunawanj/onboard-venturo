@@ -14,6 +14,16 @@ export class DashboardComponent implements OnInit {
     this_month: 0,
   }
 
+  filter: {
+    start_date: string,
+    end_date: string,
+  }
+
+  setFilterPeriod($event) {
+    this.filter.start_date = $event.startDate;
+    this.filter.end_date = $event.endDate;
+  }
+
   public barChartOptions = {
     scaleShowVerticalLines: false,
     responsive: true,
@@ -47,6 +57,7 @@ export class DashboardComponent implements OnInit {
     }
   };
   public barChartLabels = [];
+  
   public barChartData = [
     { data: [], label: 'false', backgroundColor: '' },
   ];

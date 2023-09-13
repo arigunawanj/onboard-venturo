@@ -1,0 +1,85 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-transparent">
+                <div class="card-header d-flex justify-content-between">
+                    <div class="d-flex">
+                        <div class="d-flex align-items-center me-2">
+                            <div class="d-flex align-items-center me-2">
+                                <label for="">Periode : </label>
+                            </div>
+                            <div>
+                                <app-daterangepicker [startDate]="filter.start_date" [endDate]="filter.end_date"
+                                    [showRanges]="true" (onChange)="setFilterPeriod($event)">
+                                </app-daterangepicker>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <div class="d-flex align-items-center me-2">
+                                <label for="">Customer : </label>
+                            </div>
+                            <div>
+                                <ng-select style="width: 270px;" [items]="customers" placeholder="Pilih Customer"
+                                    bindLabel="name" bindValue="id" [loading]="showLoading" [searchable]="false"
+                                    name="customer_id" (change)="setFilterCustomer($event)" [multiple]="true">
+                                    <ng-template ng-header-tmp>
+                                        <input class="form-control" value="" type="text" debounceKeyUp
+                                            (onEvent)="getCustomers($any($event.target).value)" />
+                                    </ng-template>
+                                </ng-select>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-sm btn-primary me-2" (click)="reloadSales()">
+                            Tampilkan
+                        </button>
+                        <button type="button" class="btn btn-sm btn-secondary">
+                            Excel
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>No</th>
+                                <th id="customer">Customer</th>
+                                <th *ngFor="let date of meta.dates" id="date">
+                                    {{date | date:'dd'}}
+                                </th>
+                                <th id="total">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let customer of sales">
+                                <td>
+                                    {{customer.no}}
+                                </td>
+                                <td>
+                                    {{customer.customer_name}}
+                                </td>
+                                <td class="nominal" *ngFor="let sale of customer.transactions">
+                                    Rp {{sale.total_buy | number}}
+                                </td>
+                                <td class="nominal">
+                                    Rp {{customer.customer_total | number}}
+                                </td>
+                            </tr>
+                            <tr class="category">
+                                <td [colSpan]="2">Grand Total</td>
+                                <td class="nominal" *ngFor="let total of meta?.total_per_date">
+                                    Rp {{total | number}}
+                                </td>
+                                <td class="nominal">
+                                    Rp {{meta?.grand_total | number}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

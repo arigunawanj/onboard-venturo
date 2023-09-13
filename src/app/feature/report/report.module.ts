@@ -9,12 +9,14 @@ import { CoreModule } from "src/app/core/core.module";
 import { SalesTransactionComponent } from './components/sales-transaction/sales-transaction.component';
 import { DataTablesModule } from "angular-datatables";
 import { SalesMenuComponent } from './components/sales-menu/sales-menu.component';
+import { SalesCustomerComponent } from './components/sales-customer/sales-customer.component';
 
 @NgModule({
   declarations: [
     SalesPromoComponent,
     SalesTransactionComponent,
-    SalesMenuComponent
+    SalesMenuComponent,
+    SalesCustomerComponent,
   ],
   imports: [
     CommonModule,
