@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\VoucherController;
 use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\ReportSalesController;
+use App\Http\Controllers\Api\SalesSummaryController;
 use App\Http\Controllers\Api\ProductCategoryController;
 
 /*
@@ -81,6 +82,10 @@ Route::prefix('v1')->group(function () {
     Route::get('/download/sales-category', [ReportSalesController::class, 'viewSalesCategories']);
     Route::get('/download/sale-report-csv', [SaleController::class, 'laporanCSV']);
     Route::get('/download/sale-report-pdf', [SaleController::class, 'laporanPDF']);
+
+    Route::get('/report/total-sales/summaries', [SalesSummaryController::class, 'getTotalSummary']);
+    Route::get('/report/total-sales/year', [SalesSummaryController::class, 'getDiagramPerYear']);
+    Route::get('/report/sale-customer', [ReportSalesController::class, 'viewSalesCustomer']);
 
 
     Route::post('/auth/login', [AuthController::class, 'login']);

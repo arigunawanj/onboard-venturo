@@ -109,6 +109,7 @@ class SalesModel extends Model implements CrudInterface
 
         return $sales->orderByDesc('date')->get();
     }
+
     public function getSalesByCategory($startDate, $endDate, $category = '')
     {
         $sales = $this->query()->with([
@@ -125,7 +126,8 @@ class SalesModel extends Model implements CrudInterface
             $sales->whereRaw('date >= "' . $startDate . ' 00:00:01" and date <= "' . $endDate . ' 23:59:59"');
         }
 
-        return $sales->orderByDesc('date')->get();
+        return $sales->orderByDesc('date')->get(); //basic report
+        // return $sales->orderByDesc('date')->limit(2)->get();
 
     }
 
@@ -133,9 +135,9 @@ class SalesModel extends Model implements CrudInterface
     {
         $sales = $this->query()->with([
             'customer',
-            'details',
+            'details.product',
             'discount',
-            'discount.promo'
+            'voucher.promo'
         ]);
 
         if (!empty($startDate) && !empty($endDate)) {
@@ -164,27 +166,7 @@ class SalesModel extends Model implements CrudInterface
         return $sales->where('m_customer_id', $id)->get();
     }
 
-    public function getById(string $id)
-    {
-        return $this->find($id);
-    }
-
-    public function store(array $payload)
-    {
-        return $this->create($payload);
-    }
-
-    public function edit(array $payload, string $id)
-    {
-        return $this->find($id)->update($payload);
-    }
-
-    public function drop(string $id)
-    {
-        return $this->find($id)->delete();
-    }
-
-    public function getSaleTransaction(array $filter, int $itemPerPage = 0, string $sort = '')
+     public function getSaleTransaction(array $filter, int $itemPerPage = 0, string $sort = '')
     {
         $sale = $this->query()->with([
             'details',
@@ -211,8 +193,30 @@ class SalesModel extends Model implements CrudInterface
         }
         $sort = $sort ?: 'id DESC';
         $sale->orderByRaw($sort);
+        // dd($sale->get());
         $itemPerPage = ($itemPerPage > 0) ? $itemPerPage : false;
 
         return $sale->paginate($itemPerPage)->appends('sort', $sort);
     }
+
+    public function getById(string $id)
+    {
+        return $this->find($id);
+    }
+
+    public function store(array $payload)
+    {
+        return $this->create($payload);
+    }
+
+    public function edit(array $payload, string $id)
+    {
+        return $this->find($id)->update($payload);
+    }
+
+    public function drop(string $id)
+    {
+        return $this->find($id)->delete();
+    }
+
 }

@@ -10,6 +10,16 @@ class AuthRequest extends FormRequest
     public $validator;
 
     /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+        return true;
+    }
+
+    /**
      * Tampilkan pesan error ketika validasi gagal
      *
      * @return void

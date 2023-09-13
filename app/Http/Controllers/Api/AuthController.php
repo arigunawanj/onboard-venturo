@@ -33,9 +33,9 @@ class AuthController extends Controller
         return response()->success(new UserResource(auth()->user()));
     }
 
-    //     public function getTotalSummary()
-    //     {
-    //         $sales = $this->sales->getTotalInPeriode();
-    //         return response()->success($sales['data']);
-    //     }
+        // public function getTotalSummary()
+        // {
+        //     $sales = $this->sales->getTotalInPeriode();
+        //     return response()->success($sales['data']);
+        // }
 }
